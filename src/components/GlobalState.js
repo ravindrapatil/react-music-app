@@ -1,0 +1,46 @@
+import React, { useReducer } from "react";
+
+export const GlobalContext = React.createContext();
+
+const initialState = {
+    searchState: "home",
+    searchResult: [],
+    relatedVideos: [],
+    currentVideoSnippet: {}
+}
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case "setSearchState":
+            return {
+                ...state,
+                searchState: action.snippet
+            }
+        case "setSearchResult":
+            return {
+                ...state,
+                searchResult: action.snippet
+            }
+        case "setCurrentVideoSnippet":
+            return {
+                ...state,
+                currentVideoSnippet: action.snippet
+            }
+        case "setRelatedVideos":
+            return {
+                ...state,
+                relatedVideos: action.snippet
+            }
+        default:
+            return state;
+    }
+}
+
+export const GlobalState = props => {
+    const globalState = useReducer(reducer, initialState);
+    return (
+        <GlobalContext.Provider value={globalState}>
+            {props.children}
+        </GlobalContext.Provider>
+    );
+};
