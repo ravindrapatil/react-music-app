@@ -33,6 +33,7 @@ function Movies() {
     }
 
     const [btnGroup, setBtnGroup] = useState(movieGenerState);
+    const [activeBtnGroup, setActiveBtnGroup] = useState('');
 
     const setMovieGener = data => {
         dispatch({ type: 'setMovieGener', snippet: data });
@@ -75,15 +76,19 @@ function Movies() {
         setMovieGener(newvalue);
     };
 
+    const isActive = () => {
+
+    }
+
     console.log(btnGroup);
 
     return (
         <div>
             <div className={classes.buttonGroup}>
-                <ButtonGroup color="primary" aria-label="outlined primary button group">
-                    <Button onClick={(e) => popularMovies('popular')}>Popular</Button>
-                    <Button onClick={(e) => topRatedMovies('top_rated')}>Top rated</Button>
-                    <Button onClick={(e) => upcomingMovies('upcoming')}>Upcoming</Button>
+                <ButtonGroup color="primary" size="small" aria-label="outlined primary button group">
+                    <Button className={btnGroup === 'popular' ? 'active' : 'gener-btn'} onClick={(e) => popularMovies('popular')}>Popular</Button>
+                    <Button className={btnGroup === 'top_rated' ? 'active' : 'gener-btn'} onClick={(e) => topRatedMovies('top_rated')}>Top rated</Button>
+                    <Button className={btnGroup === 'upcoming' ? 'active' : 'gener-btn'} onClick={(e) => upcomingMovies('upcoming')}>Upcoming</Button>
                 </ButtonGroup>
             </div>
             <div className="moviesCard">
