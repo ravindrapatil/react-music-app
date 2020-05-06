@@ -6,7 +6,10 @@ const initialState = {
     searchState: "home",
     searchResult: [],
     relatedVideos: [],
-    currentVideoSnippet: {}
+    currentVideoSnippet: {},
+    latestMoviesList: [],
+    menuOpen: false,
+    movieGenerState: 'popular'
 }
 
 const reducer = (state, action) => {
@@ -30,6 +33,21 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 relatedVideos: action.snippet
+            }
+        case "setMenuOpen":
+            return {
+                ...state,
+                menuOpen: action.snippet
+            }
+        case "latestMovies":
+            return {
+                ...state,
+                latestMoviesList: action.snippet
+            }
+        case "setMovieGener":
+            return {
+                ...state,
+                movieGenerState: action.snippet
             }
         default:
             return state;

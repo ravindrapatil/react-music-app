@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { withRouter, Switch, Route, Link } from "react-router-dom";
 import { Tabs, Tab, withStyles, Container } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 import HomeIcon from '@material-ui/icons/Home';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import HistoryIcon from '@material-ui/icons/History';
@@ -12,6 +12,8 @@ import LoginPage from './LoginPage';
 import HomePage from './HomePage';
 import MainPlayer from '../components/player/MainPlayer';
 import RelatedVideos from './RelatedVideos';
+import Settings from './Settings';
+import Movies from './movies/Movies';
 
 const AntTab = withStyles({
     root: {
@@ -74,10 +76,10 @@ function MainSection({ history, location }) {
         previousLocation = location;
         history.listen(location => {
             if (location.pathname !== "/play") {
-              previousLocation = location;
-              console.log(previousLocation);
+                previousLocation = location;
+                console.log(previousLocation);
             }
-          });
+        });
     }, []);
 
     useEffect(() => {
@@ -125,19 +127,24 @@ function MainSection({ history, location }) {
                     <Route
                         path="/home"
                         render={props => {
-                            setTabValue(0);
+                            // setTabValue(0);
                             return <HomePage />
-                        }
-                        }
+                        }}
                     />
                     <Route
                         path="/relatedvideos"
                         render={props => {
-                            setTabValue(1);
+                            // setTabValue(1);
                             return <RelatedVideos />
-                        }
-                        }
+                        }}
                     />
+                    <Route
+                        path="/movies"
+                        render={props => {
+                            return <Movies />
+                        }}
+                    />
+                    <Route path="/settings" component={Settings} />
                 </Switch>
                 <Route path="/" render={props => returnMainPlayer(props)} />
                 <div style={{ height: currentVideoSnippet.id ? "100px" : "0px" }} />
@@ -146,8 +153,8 @@ function MainSection({ history, location }) {
                 <Container>
                     <AntTab value={tabValue} onChange={handleTabChange} variant="fullWidth" indicatorColor="primary" textColor="primary">
                         <AntTabs aria-label="Home" icon={<HomeIcon />} to="/home" label="Home" component={Link} />
-                        <AntTabs aria-label="Liked" icon={<SearchIcon />} to="/relatedvideos" label="Related Videos" component={Link} />
-                        <AntTabs aria-label="Download" icon={<GetAppIcon />} to="/download" label="Download" component={Link} />
+                        <AntTabs aria-label="Liked" icon={<QueueMusicIcon />} to="/relatedvideos" label="Related Videos" component={Link} />
+                        <AntTabs aria-label="Movies" icon={<GetAppIcon />} to="/movies" label="Movies" component={Link} />
                         <AntTabs aria-label="History" icon={<HistoryIcon />} to="/history" label="History" component={Link} />
                     </AntTab>
                 </Container>

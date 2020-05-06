@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useEffect } from 'react';
+import React, { useContext, useCallback, useEffect, useRef } from 'react';
 import { withRouter } from "react-router-dom";
 import { GlobalContext } from "../GlobalState";
 
@@ -13,6 +13,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
 import SearchBox from './SearchBox';
+import MakeshiftDrawer from './MakeshiftDrawer';
+// import useOutsideClick from '../../components/useOutsideClick';
 
 const styles = {
     root: {
@@ -25,13 +27,30 @@ const styles = {
 }
 
 function AppBarHeader(props) {
-    const [{ searchState }, dispatch] = useContext(GlobalContext);
+    const [{ searchState, menuOpen }, dispatch] = useContext(GlobalContext);
+
+    const ref = useRef();
+
+    // useOutsideClick(ref, () => {
+    //     dispatch({type: 'setMenuOpen', snippet: false})
+    // })
 
     const setSearchState = useCallback(
         data => {
             dispatch({ type: 'setSearchState', snippet: data });
         }, [dispatch]
     );
+
+    const setMenuOpen = data => {
+        dispatch({ type: 'setMenuOpen', snippet: data });
+    }
+
+    // const [isOpen, setIsOpen] = useState(false);
+
+    const toggle = (menuOpen) => {
+        // setIsOpen(!isOpen);
+        setMenuOpen(!menuOpen);
+    }
 
     useEffect(() => {
         // if the page is on search we will change the search state
@@ -60,9 +79,14 @@ function AppBarHeader(props) {
                     <IconButton
                         color="inherit"
                         aria-label="Menu"
+                        // onClick={() => setMenuOpen(true)}
+                        onClick={() => toggle(menuOpen)}
                     >
                         <MenuIcon />
                     </IconButton>
+                    <div ref={ref}>
+                        <MakeshiftDrawer open={menuOpen} />
+                    </div>
                     <Typography variant="h6" color="inherit" style={styles.title}>
                         SIM Music
                      </Typography>
