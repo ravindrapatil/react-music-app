@@ -9,9 +9,8 @@ import {
     Grid,
     Badge
 } from '@material-ui/core/';
-
+import { withRouter } from 'react-router-dom';
 import defaultImg from '../../images/default-movie.jpg';
-
 import GenreList from './GenreList';
 
 const useStyles = makeStyles({
@@ -28,7 +27,7 @@ const useStyles = makeStyles({
     }
 });
 
-let genresaa = [
+let moviegener = [
     { id: 28, name: "Action" },
     { id: 12, name: "Adventure" },
     { id: 16, name: "Animation" },
@@ -50,30 +49,42 @@ let genresaa = [
     { id: 37, name: "Western" }
 ]
 
-function MovieCard({ movies }) {
+function MovieCard(props) {
     const classes = useStyles();
+    const { movies } = props;
+
+    const gotoMovieDetails = path => {
+        props.history.push(path);
+    }
+
     return (
         <Grid container spacing={3}>
             {
-                movies.map((item, index) => {
-                    const genres = genresaa.filter(genre => {
+                movies && movies.map((item, index) => {
+                    const genres = moviegener.filter(genre => {
                         const match = item.genre_ids.filter(genreId => genreId === genre.id);
                         return match[0] === genre.id;
                     });
 
+                    const ratingClass = () => {
+                        return item.vote_average > 7 ? 'green' : 'grey'
+                    }
+
+                    const path = `/movie/${item.id}`;
+
                     return (
                         <Grid item xs={12} md={3} lg={2} sm={2} key={index}>
-                            <Badge className="badgeStyle" anchorOrigin={{
+                            <Badge className={`badgeStyle ${ratingClass()}`} anchorOrigin={{
                                 vertical: 'top',
                                 horizontal: 'left',
                             }} badgeContent={item.vote_average} color="primary" />
                             <Card className={classes.root}>
-                                <CardActionArea className={classes.cardBtn}>
+                                <CardActionArea className={classes.cardBtn} onClick={() => gotoMovieDetails(path)}>
                                     <CardMedia
                                         component="img"
                                         alt={item.title}
                                         height="278"
-                                        image={ item.poster_path ? `https://image.tmdb.org/t/p/w185//${item.poster_path}` : `${defaultImg}`}
+                                        image={item.poster_path ? `https://image.tmdb.org/t/p/w185//${item.poster_path}` : `${defaultImg}`}
                                         title={item.title}
                                     />
                                     <CardContent>
@@ -94,4 +105,4 @@ function MovieCard({ movies }) {
     )
 }
 
-export default MovieCard
+export default withRouter(MovieCard)

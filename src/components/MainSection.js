@@ -14,6 +14,7 @@ import MainPlayer from '../components/player/MainPlayer';
 import RelatedVideos from './RelatedVideos';
 import Settings from './Settings';
 import Movies from './movies/Movies';
+import MovieFullView from './movies/MovieFullView';
 
 const AntTab = withStyles({
     root: {
@@ -143,6 +144,10 @@ function MainSection({ history, location }) {
                         render={props => {
                             return <Movies />
                         }}
+                    />
+                    <Route
+                        path="/movie/:id"
+                        render={props => <MovieFullView {...props} />}
                     />
                     <Route path="/settings" component={Settings} />
                 </Switch>

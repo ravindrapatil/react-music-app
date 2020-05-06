@@ -50,6 +50,17 @@ export default {
         }).catch(err => {
             console.log(err);
         })
+    },
+    getMovieDetails: (id) => {
+        return axios.get(`${baseUrl}/3/movie/${id}`, {
+            params: {
+                api_key: '5696692100a0d2aaeee00f4963a6d69e'
+            }
+        }).then(res => {
+            return res
+        }).catch(err => {
+            console.log(err);
+        })
     }
 }
 

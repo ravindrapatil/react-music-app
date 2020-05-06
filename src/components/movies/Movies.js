@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-function Movies() {
+function Movies(props) {
     const classes = useStyles();
     const [{ movieGenerState }, dispatch ] = useContext(GlobalContext);
 
@@ -33,7 +33,6 @@ function Movies() {
     }
 
     const [btnGroup, setBtnGroup] = useState(movieGenerState);
-    const [activeBtnGroup, setActiveBtnGroup] = useState('');
 
     const setMovieGener = data => {
         dispatch({ type: 'setMovieGener', snippet: data });
@@ -75,10 +74,6 @@ function Movies() {
         // upcomingMoviesList();
         setMovieGener(newvalue);
     };
-
-    const isActive = () => {
-
-    }
 
     console.log(btnGroup);
 
