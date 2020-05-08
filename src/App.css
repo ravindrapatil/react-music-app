@@ -133,3 +133,12 @@
 .pswp img {
   object-fit: contain !important;
 }
+
+.searchInputForm {
+  text-align: center !important;
+  padding: 20px 0;
+}
+
+.searchInputForm div.MuiInputBase-fullWidth {
+  width: auto !important;
+}

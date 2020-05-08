@@ -144,23 +144,27 @@ function MainSection({ history, location }) {
                     <Route
                         path="/movies"
                         render={props => {
-                            return <Movies />
+                            return <Movies {...props} />
                         }}
                     />
                     <Route
                         path="/movie/:id"
-                        render={props => <MovieFullView {...props} />}
+                        render={props => {
+                            return <MovieFullView {...props} />
+                        }}
                     />
                     <Route
                         path="/person/:id"
                         render={props => <PersonDetails {...props} />}
                     />
-                    {/* <Route
-                        path="searchmovies/:query" component={SearchMovies}
-                        render={props => <SearchMovies {...props} />}
-                    /> */}
+                    <Route
+                        path="/searchmovies/:query"
+                        render={props => {
+                            return <SearchMovies {...props} />
+                        }}
+                    />
 
-                    <Route path="searchmovies/:query" component={SearchMovies} />
+                    {/* <Route path="searchmovies" component={SearchMovies} /> */}
 
                     <Route path="/settings" component={Settings} />
                 </Switch>

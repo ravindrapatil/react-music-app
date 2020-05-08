@@ -11,6 +11,7 @@ import MoviesGallery from './MoviesGallery';
 import CastAndCrewComponent from './CastAndCrew';
 import MovieCard from './MovieCard';
 import { formatMoney, formatTime, genresList } from '../../utilities/utilities';
+import defaultImg from '../../images/default-movie.jpg';
 
 const useStyles = makeStyles(() => ({
     imgStyle: {
@@ -47,8 +48,8 @@ function MovieFullView(props) {
     const getCastAndCrew = async (id) => {
         const credits = await themoviedb.getCredits(id);
         const castcrew = credits.data.cast;
-        if(credits.data.cast.length > 10) {
-            castcrew.length = 40; 
+        if (credits.data.cast.length > 10) {
+            castcrew.length = 40;
         }
         // castcrew.length = 40;
         setCastAndCrew(castcrew);
@@ -81,7 +82,7 @@ function MovieFullView(props) {
                     movie && <Grid container spacing={3}>
                         <Grid item xs={12} md={3} lg={3} sm={3}>
                             <img className={classes.imgStyle}
-                                src={`https://image.tmdb.org/t/p/w300///${movie.poster_path}`}
+                                src={movie.poster_path ? `https://image.tmdb.org/t/p/w300///${movie.poster_path}` :`${defaultImg}`}
                                 alt={movie.title}
                                 title={movie.title} />
                         </Grid>
@@ -155,12 +156,11 @@ function MovieFullView(props) {
                 <CastAndCrewComponent castAndCrew={castAndCrew} />
             </div>
             {
-                recommendedMoviesList && recommendedMoviesList.length ?
-                <div>
+                recommendedMoviesList && recommendedMoviesList.length &&
+                <>
                     <Typography variant="h5" gutterBottom>RECOMMENDATIONS</Typography>
                     <MovieCard movies={recommendedMoviesList} />
-                </div> :
-                <div>&nbsp;</div>
+                </>
             }
         </>
     )

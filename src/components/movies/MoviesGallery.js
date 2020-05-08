@@ -52,7 +52,7 @@ function MoviesGallery({ movieImages }) {
     return (
         <div style={{ marginBottom: '30px' }}>
             {
-                movieImages !== undefined ? template : '<div></div>'
+                movieImages !== undefined && template
             }
 
         </div>

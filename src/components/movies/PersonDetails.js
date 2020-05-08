@@ -105,13 +105,11 @@ function PersonDetails(props) {
                 }
             </div>
             {
-                personCrewList && personCrewList.length ?
-                    <div>
-                        <Typography variant="h5" gutterBottom>KNOWN BY</Typography>
-                        <MovieCard movies={personCrewList} />
-                    </div>
-                    :
-                    <div>&nbsp;</div>
+                personCrewList && personCrewList.length &&
+                <div>
+                    <Typography variant="h5" gutterBottom>KNOWN BY</Typography>
+                    <MovieCard movies={personCrewList} />
+                </div>
             }
 
         </>

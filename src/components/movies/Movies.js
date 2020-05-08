@@ -16,11 +16,8 @@ function Movies(props) {
     const [popularMoviesData, setPopularMoviesData] = useState([]);
     const [topRatedMoviesData, setTopRatedMoviesData] = useState([]);
     const [upcomingMoviesData, setUpcomingMoviesData] = useState([]);
-    const [searchResult, setSearchResult] = useState([]);
     const [searchQuery, setsearchQuery] = useState('');
-    const [moviesCard, setMoviesCard] = useState(true);
     const [btnGroup, setBtnGroup] = useState(movieGenerState);
-    const [generBtnGroup, setGenerBtnGroup] = useState(true);
 
     const getLatestMovies = async () => {
         const latestMovies = await themoviedb.getLatestMovies();
@@ -70,63 +67,45 @@ function Movies(props) {
 
     const handleOnChange = (e) => {
         if (e.target.value.length > 0) {
+            props.history.push(`/searchmovies/${e.target.value}`);
+            // props.history.push({
+            //     pathname: '/searchmovies'
+            // });
             setsearchQuery(e.target.value);
-            setMoviesCard(false);
-            setGenerBtnGroup(false)
         } else {
             setsearchQuery(e.target.value);
-            setMoviesCard(true);
-            setGenerBtnGroup(true);
         }
     }
 
-    const makeSearchApiCall = async (searchQuery) => {
-        const searchResult = await themoviedb.getSearchMovies(searchQuery);
-        setSearchResult(searchResult.data.results)
-    }
-
-    useEffect(() => {
-        console.log(searchQuery);
-        if (searchQuery.length > 1) {
-            makeSearchApiCall(searchQuery)
-        }
-    }, [searchQuery])
+    
 
     return (
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '17px 0 0' }}>
-                {
-                    generBtnGroup && <div>
-                        <ButtonGroup color="primary" size="small" aria-label="outlined primary button group">
-                            <Button className={btnGroup === 'popular' ? 'active' : 'gener-btn'} onClick={(e) => popularMovies('popular')}>Popular</Button>
-                            <Button className={btnGroup === 'top_rated' ? 'active' : 'gener-btn'} onClick={(e) => topRatedMovies('top_rated')}>Top rated</Button>
-                            <Button className={btnGroup === 'upcoming' ? 'active' : 'gener-btn'} onClick={(e) => upcomingMovies('upcoming')}>Upcoming</Button>
-                        </ButtonGroup>
-                    </div>
-                }
+                <div>
+                    <ButtonGroup color="primary" size="small" aria-label="outlined primary button group">
+                        <Button className={btnGroup === 'popular' ? 'active' : 'gener-btn'} onClick={(e) => popularMovies('popular')}>Popular</Button>
+                        <Button className={btnGroup === 'top_rated' ? 'active' : 'gener-btn'} onClick={(e) => topRatedMovies('top_rated')}>Top rated</Button>
+                        <Button className={btnGroup === 'upcoming' ? 'active' : 'gener-btn'} onClick={(e) => upcomingMovies('upcoming')}>Upcoming</Button>
+                    </ButtonGroup>
+                </div>
                 <div>
                     <form className="searchForm" noValidate autoComplete="off">
                         <InputBase
                             fullWidth
-                            placeholder="Search..."
+                            placeholder="General Movie Search..."
                             autoFocus
-                            onChange={handleOnChange}
+                            onChange={(e) => handleOnChange(e)}
                             value={searchQuery}
                         />
                     </form>
                 </div>
             </div>
-            {
-                moviesCard && <div className="moviesCard">
-                    {btnGroup === 'popular' && <MovieCard movies={popularMoviesData} />}
-                    {btnGroup === 'top_rated' && <MovieCard movies={topRatedMoviesData} />}
-                    {btnGroup === 'upcoming' && <MovieCard movies={upcomingMoviesData} />}
-                </div>
-            }
-            {
-                searchResult && <MovieCard movies={searchResult} />
-            }
-
+            <div className="moviesCard">
+                {btnGroup === 'popular' && <MovieCard movies={popularMoviesData} />}
+                {btnGroup === 'top_rated' && <MovieCard movies={topRatedMoviesData} />}
+                {btnGroup === 'upcoming' && <MovieCard movies={upcomingMoviesData} />}
+            </div>
         </div>
     )
 }
