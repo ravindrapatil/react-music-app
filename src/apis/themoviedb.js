@@ -61,6 +61,84 @@ export default {
         }).catch(err => {
             console.log(err);
         })
+    },
+    getImages: (id) => {
+        return axios.get(`${baseUrl}/3/movie/${id}/images`, {
+            params: {
+                api_key: '5696692100a0d2aaeee00f4963a6d69e'
+            }
+        }).then(res => {
+            return res
+        }).catch(err => {
+            console.log(err);
+        })
+    },
+    getPersonImages: (id) => {
+        return axios.get(`${baseUrl}/3/person/${id}/images`, {
+            params: {
+                api_key: '5696692100a0d2aaeee00f4963a6d69e'
+            }
+        }).then(res => {
+            return res
+        }).catch(err => {
+            console.log(err);
+        })
+    },
+    getCredits: (id) => {
+        return axios.get(`${baseUrl}/3/movie/${id}/credits`, {
+            params: {
+                api_key: '5696692100a0d2aaeee00f4963a6d69e'
+            }
+        }).then(res => {
+            return res
+        }).catch(err => {
+            console.log(err);
+        })
+    },
+    getRecommendations: id => {
+        return axios.get(`${baseUrl}/3/movie/${id}/recommendations`, {
+            params: {
+                api_key: '5696692100a0d2aaeee00f4963a6d69e'
+            }
+        }).then(res => {
+            return res
+        }).catch(err => {
+            console.log(err);
+        })
+    },
+    getArtistDetails: id => {
+        return axios.get(`${baseUrl}/3/person/${id}`, {
+            params: {
+                api_key: '5696692100a0d2aaeee00f4963a6d69e'
+            }
+        }).then(res => {
+            return res
+        }).catch(err => {
+            console.log(err);
+        })
+    },
+    getMovieCredits: id => {
+        return axios.get(`${baseUrl}/3/person/${id}/movie_credits`, {
+            params: {
+                api_key: '5696692100a0d2aaeee00f4963a6d69e'
+            }
+        }).then(res => {
+            return res
+        }).catch(err => {
+            console.log(err);
+        })
+    },
+    getSearchMovies: (query) => {
+        return axios.get(`${baseUrl}/3/search/movie`, {
+            params: { 
+                query, 
+                api_key: '5696692100a0d2aaeee00f4963a6d69e'
+            }
+        }).then(res => {
+            return res
+        }).catch(err => {
+            console.log(err);
+        })
     }
 }
 

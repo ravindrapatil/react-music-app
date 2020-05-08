@@ -1,49 +1,42 @@
 import React, { useEffect, useState, useContext } from 'react';
 import themoviedb from '../../apis/themoviedb';
-import { makeStyles } from '@material-ui/core/styles';
 import {
     ButtonGroup,
-    Button
+    Button,
+    InputBase
 } from '@material-ui/core/';
-
+import { withRouter } from 'react-router-dom';
 import MovieCard from './MovieCard';
 
 import { GlobalContext } from "../GlobalState";
 
-const useStyles = makeStyles(() => ({
-    buttonGroup: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: '20px 0'
-    }
-}))
-
 function Movies(props) {
-    const classes = useStyles();
-    const [{ movieGenerState }, dispatch ] = useContext(GlobalContext);
+    const [{ movieGenerState }, dispatch] = useContext(GlobalContext);
 
     const [popularMoviesData, setPopularMoviesData] = useState([]);
     const [topRatedMoviesData, setTopRatedMoviesData] = useState([]);
     const [upcomingMoviesData, setUpcomingMoviesData] = useState([]);
+    const [searchResult, setSearchResult] = useState([]);
+    const [searchQuery, setsearchQuery] = useState('');
+    const [moviesCard, setMoviesCard] = useState(true);
+    const [btnGroup, setBtnGroup] = useState(movieGenerState);
+    const [generBtnGroup, setGenerBtnGroup] = useState(true);
 
     const getLatestMovies = async () => {
         const latestMovies = await themoviedb.getLatestMovies();
         setPopularMoviesData(latestMovies.data.results);
     }
 
-    const [btnGroup, setBtnGroup] = useState(movieGenerState);
-
     const setMovieGener = data => {
         dispatch({ type: 'setMovieGener', snippet: data });
     }
 
     useEffect(() => {
-        if(btnGroup === 'popular') {
+        if (btnGroup === 'popular') {
             getLatestMovies();
-        } else if(btnGroup === 'top_rated') {
+        } else if (btnGroup === 'top_rated') {
             getTopRatedMovies();
-        } else if(btnGroup === 'upcoming') {
+        } else if (btnGroup === 'upcoming') {
             upcomingMoviesList();
         }
     }, [btnGroup])
@@ -54,7 +47,7 @@ function Movies(props) {
     };
 
     const getTopRatedMovies = async () => {
-        const topRatedMovies =  await themoviedb.getTopRatedMovies();
+        const topRatedMovies = await themoviedb.getTopRatedMovies();
         setTopRatedMoviesData(topRatedMovies.data.results);
     }
 
@@ -75,27 +68,70 @@ function Movies(props) {
         setMovieGener(newvalue);
     };
 
-    console.log(btnGroup);
+    const handleOnChange = (e) => {
+        if (e.target.value.length > 0) {
+            setsearchQuery(e.target.value);
+            setMoviesCard(false);
+            setGenerBtnGroup(false)
+        } else {
+            setsearchQuery(e.target.value);
+            setMoviesCard(true);
+            setGenerBtnGroup(true);
+        }
+    }
+
+    const makeSearchApiCall = async (searchQuery) => {
+        const searchResult = await themoviedb.getSearchMovies(searchQuery);
+        setSearchResult(searchResult.data.results)
+    }
+
+    useEffect(() => {
+        console.log(searchQuery);
+        if (searchQuery.length > 1) {
+            makeSearchApiCall(searchQuery)
+        }
+    }, [searchQuery])
 
     return (
         <div>
-            <div className={classes.buttonGroup}>
-                <ButtonGroup color="primary" size="small" aria-label="outlined primary button group">
-                    <Button className={btnGroup === 'popular' ? 'active' : 'gener-btn'} onClick={(e) => popularMovies('popular')}>Popular</Button>
-                    <Button className={btnGroup === 'top_rated' ? 'active' : 'gener-btn'} onClick={(e) => topRatedMovies('top_rated')}>Top rated</Button>
-                    <Button className={btnGroup === 'upcoming' ? 'active' : 'gener-btn'} onClick={(e) => upcomingMovies('upcoming')}>Upcoming</Button>
-                </ButtonGroup>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '17px 0 0' }}>
+                {
+                    generBtnGroup && <div>
+                        <ButtonGroup color="primary" size="small" aria-label="outlined primary button group">
+                            <Button className={btnGroup === 'popular' ? 'active' : 'gener-btn'} onClick={(e) => popularMovies('popular')}>Popular</Button>
+                            <Button className={btnGroup === 'top_rated' ? 'active' : 'gener-btn'} onClick={(e) => topRatedMovies('top_rated')}>Top rated</Button>
+                            <Button className={btnGroup === 'upcoming' ? 'active' : 'gener-btn'} onClick={(e) => upcomingMovies('upcoming')}>Upcoming</Button>
+                        </ButtonGroup>
+                    </div>
+                }
+                <div>
+                    <form className="searchForm" noValidate autoComplete="off">
+                        <InputBase
+                            fullWidth
+                            placeholder="Search..."
+                            autoFocus
+                            onChange={handleOnChange}
+                            value={searchQuery}
+                        />
+                    </form>
+                </div>
             </div>
-            <div className="moviesCard">
-                {btnGroup === 'popular' && <MovieCard movies = {popularMoviesData} />}
-                {btnGroup === 'top_rated' && <MovieCard movies = {topRatedMoviesData} />}
-                {btnGroup === 'upcoming' && <MovieCard movies = {upcomingMoviesData} />}
-            </div>
+            {
+                moviesCard && <div className="moviesCard">
+                    {btnGroup === 'popular' && <MovieCard movies={popularMoviesData} />}
+                    {btnGroup === 'top_rated' && <MovieCard movies={topRatedMoviesData} />}
+                    {btnGroup === 'upcoming' && <MovieCard movies={upcomingMoviesData} />}
+                </div>
+            }
+            {
+                searchResult && <MovieCard movies={searchResult} />
+            }
+
         </div>
     )
 }
 
-export default Movies
+export default withRouter(Movies)
 
 
 // https://maqsudkarimov.github.io/tmdb-app/

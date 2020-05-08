@@ -7,6 +7,9 @@ import {
 
 import themoviedb from '../../apis/themoviedb';
 import GenreList from './GenreList';
+import MoviesGallery from './MoviesGallery';
+import CastAndCrewComponent from './CastAndCrew';
+import MovieCard from './MovieCard';
 import { formatMoney, formatTime, genresList } from '../../utilities/utilities';
 
 const useStyles = makeStyles(() => ({
@@ -20,44 +23,49 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-// let moviegener = [
-//     { id: 28, name: "Action" },
-//     { id: 12, name: "Adventure" },
-//     { id: 16, name: "Animation" },
-//     { id: 35, name: "Comedy" },
-//     { id: 80, name: "Crime" },
-//     { id: 99, name: "Documentary" },
-//     { id: 18, name: "Drama" },
-//     { id: 10751, name: "Family" },
-//     { id: 14, name: "Fantasy" },
-//     { id: 36, name: "History" },
-//     { id: 27, name: "Horror" },
-//     { id: 10402, name: "Music" },
-//     { id: 9648, name: "Mystery" },
-//     { id: 10749, name: "Romance" },
-//     { id: 878, name: "Science Fiction" },
-//     { id: 10770, name: "TV Movie" },
-//     { id: 53, name: "Thriller" },
-//     { id: 10752, name: "War" },
-//     { id: 37, name: "Western" }
-// ]
-
 function MovieFullView(props) {
     const classes = useStyles();
     const movieId = props.match.params.id;
     const [movie, setMovie] = useState({});
+    const [movieImages, setMovieImages] = useState();
+    const [castAndCrew, setCastAndCrew] = useState();
+    const [recommendedMoviesList, setRecommendedMoviesList] = useState();
     let revenue, budget, runtime, moviegenre;
-
-    useEffect(() => {
-        getMovieDetails(movieId)
-    }, [movieId])
 
     const getMovieDetails = async (id) => {
         const result = await themoviedb.getMovieDetails(id);
         setMovie(result.data);
     }
 
-    
+    const getMovieImages = async (id) => {
+        const imagesResult = await themoviedb.getImages(id);
+        let posters = imagesResult.data.posters
+        posters.length = 10;
+        setMovieImages(posters);
+    }
+
+    const getCastAndCrew = async (id) => {
+        const credits = await themoviedb.getCredits(id);
+        const castcrew = credits.data.cast;
+        if(credits.data.cast.length > 10) {
+            castcrew.length = 40; 
+        }
+        // castcrew.length = 40;
+        setCastAndCrew(castcrew);
+    }
+
+    const getRecommendedMovies = async (id) => {
+        const recommendations = await themoviedb.getRecommendations(id);
+        const recMovies = recommendations.data.results;
+        setRecommendedMoviesList(recMovies);
+    }
+
+    useEffect(() => {
+        getMovieDetails(movieId);
+        getMovieImages(movieId);
+        getCastAndCrew(movieId);
+        getRecommendedMovies(movieId)
+    }, [movieId])
 
     if (Object.keys(movie).length !== 0) {
         revenue = formatMoney(movie.revenue);
@@ -67,78 +75,94 @@ function MovieFullView(props) {
     }
 
     return (
-        <div style={{ marginTop: '30px' }}>
+        <>
+            <div style={{ marginTop: '30px' }}>
+                {
+                    movie && <Grid container spacing={3}>
+                        <Grid item xs={12} md={3} lg={3} sm={3}>
+                            <img className={classes.imgStyle}
+                                src={`https://image.tmdb.org/t/p/w300///${movie.poster_path}`}
+                                alt={movie.title}
+                                title={movie.title} />
+                        </Grid>
+                        <Grid item xs={12} md={9} lg={9} sm={9}>
+                            <div className={classes.content}>
+                                <Typography variant="caption" gutterBottom>
+                                    Title:
+                        </Typography>
+                                <Typography variant="h5" gutterBottom>
+                                    {movie.title}
+                                </Typography>
+                            </div>
+
+                            <div className={classes.content}>
+                                <Typography variant="caption" gutterBottom>
+                                    Overview:
+                        </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                    {movie.overview}
+                                </Typography>
+                            </div>
+
+                            <div className={classes.content}>
+                                <Typography variant="caption" gutterBottom>
+                                    Release date:
+                        </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                    {movie.release_date}
+                                </Typography>
+                            </div>
+
+                            <div className={classes.content}>
+                                <Typography variant="caption" gutterBottom>
+                                    Budget:
+                        </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                    $ {budget}
+                                </Typography>
+                            </div>
+
+                            <div className={classes.content}>
+                                <Typography variant="caption" gutterBottom>
+                                    Revenue:
+                        </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                    $ {revenue}
+                                </Typography>
+                            </div>
+
+                            <div className={classes.content}>
+                                <Typography variant="caption" gutterBottom>
+                                    Duration:
+                            </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                    {runtime}
+                                </Typography>
+                            </div>
+
+                            <div className={classes.content}>
+                                {moviegenre && <GenreList moviegenre={moviegenre} />}
+                            </div>
+
+                        </Grid>
+                    </Grid>
+                }
+            </div>
+            <div>
+                <MoviesGallery movieImages={movieImages} />
+            </div>
+            <div>
+                <CastAndCrewComponent castAndCrew={castAndCrew} />
+            </div>
             {
-                movie && <Grid container spacing={3}>
-                    <Grid item xs={12} md={3} lg={3} sm={3}>
-                        <img className={classes.imgStyle}
-                            src={`https://image.tmdb.org/t/p/w300///${movie.poster_path}`}
-                            alt={movie.title}
-                            title={movie.title} />
-                    </Grid>
-                    <Grid item xs={12} md={9} lg={9} sm={9}>
-                        <div className={classes.content}>
-                            <Typography variant="caption" gutterBottom>
-                                Title:
-                        </Typography>
-                            <Typography variant="h5" gutterBottom>
-                                {movie.title}
-                            </Typography>
-                        </div>
-
-                        <div className={classes.content}>
-                            <Typography variant="caption" gutterBottom>
-                                Overview:
-                        </Typography>
-                            <Typography variant="body2" gutterBottom>
-                                {movie.overview}
-                            </Typography>
-                        </div>
-
-                        <div className={classes.content}>
-                            <Typography variant="caption" gutterBottom>
-                                Release date:
-                        </Typography>
-                            <Typography variant="body2" gutterBottom>
-                                {movie.release_date}
-                            </Typography>
-                        </div>
-
-                        <div className={classes.content}>
-                            <Typography variant="caption" gutterBottom>
-                                Budget:
-                        </Typography>
-                            <Typography variant="body2" gutterBottom>
-                                $ {budget}
-                            </Typography>
-                        </div>
-
-                        <div className={classes.content}>
-                            <Typography variant="caption" gutterBottom>
-                                Revenue:
-                        </Typography>
-                            <Typography variant="body2" gutterBottom>
-                                $ {revenue}
-                            </Typography>
-                        </div>
-
-                        <div className={classes.content}>
-                            <Typography variant="caption" gutterBottom>
-                                Duration:
-                            </Typography>
-                            <Typography variant="body2" gutterBottom>
-                                {runtime}
-                            </Typography>
-                        </div>
-
-                        <div className={classes.content}>
-                            {moviegenre && <GenreList moviegenre={moviegenre} /> }
-                        </div>
-
-                    </Grid>
-                </Grid>
+                recommendedMoviesList && recommendedMoviesList.length ?
+                <div>
+                    <Typography variant="h5" gutterBottom>RECOMMENDATIONS</Typography>
+                    <MovieCard movies={recommendedMoviesList} />
+                </div> :
+                <div>&nbsp;</div>
             }
-        </div>
+        </>
     )
 }
 
