@@ -142,3 +142,11 @@
 .searchInputForm div.MuiInputBase-fullWidth {
   width: auto !important;
 }
+
+.moviesSearchPage {
+  text-align: right !important;
+}
+
+.moviesSearchPage .MuiInputBase-fullWidth { 
+  width: auto !important;
+}

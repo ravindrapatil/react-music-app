@@ -3,7 +3,8 @@ import themoviedb from '../../apis/themoviedb';
 import {
     ButtonGroup,
     Button,
-    InputBase
+    InputBase,
+    Grid
 } from '@material-ui/core/';
 import { withRouter } from 'react-router-dom';
 import MovieCard from './MovieCard';
@@ -77,35 +78,45 @@ function Movies(props) {
         }
     }
 
-    
+
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '17px 0 0' }}>
-                <div>
-                    <ButtonGroup color="primary" size="small" aria-label="outlined primary button group">
-                        <Button className={btnGroup === 'popular' ? 'active' : 'gener-btn'} onClick={(e) => popularMovies('popular')}>Popular</Button>
-                        <Button className={btnGroup === 'top_rated' ? 'active' : 'gener-btn'} onClick={(e) => topRatedMovies('top_rated')}>Top rated</Button>
-                        <Button className={btnGroup === 'upcoming' ? 'active' : 'gener-btn'} onClick={(e) => upcomingMovies('upcoming')}>Upcoming</Button>
-                    </ButtonGroup>
-                </div>
-                <div>
-                    <form className="searchForm" noValidate autoComplete="off">
-                        <InputBase
-                            fullWidth
-                            placeholder="General Movie Search..."
-                            autoFocus
-                            onChange={(e) => handleOnChange(e)}
-                            value={searchQuery}
-                        />
-                    </form>
-                </div>
-            </div>
+            <Grid container spacing={3} style={{marginTop: '20px'}}>
+                <Grid item xs={12} md={6} lg={6} sm={6}>
+                    <div>
+                        <ButtonGroup color="primary" size="small" aria-label="outlined primary button group">
+                            <Button className={btnGroup === 'popular' ? 'active' : 'gener-btn'} onClick={(e) => popularMovies('popular')}>Popular</Button>
+                            <Button className={btnGroup === 'top_rated' ? 'active' : 'gener-btn'} onClick={(e) => topRatedMovies('top_rated')}>Top rated</Button>
+                            <Button className={btnGroup === 'upcoming' ? 'active' : 'gener-btn'} onClick={(e) => upcomingMovies('upcoming')}>Upcoming</Button>
+                        </ButtonGroup>
+                    </div>
+                </Grid>
+                <Grid item xs={12} md={6} lg={6} sm={6}>
+                    <div className="moviesSearchPage">
+                        <form className="searchForm" noValidate autoComplete="off">
+                            <InputBase
+                                fullWidth
+                                placeholder="General Movie Search..."
+                                autoFocus
+                                onChange={(e) => handleOnChange(e)}
+                                value={searchQuery}
+                            />
+                        </form>
+                    </div>
+                </Grid>
+            </Grid>
+
+            {/* <div style={{ display: 'flex', justifyContent: 'space-between', padding: '17px 0 0' }}>
+
+
+            </div> */}
             <div className="moviesCard">
                 {btnGroup === 'popular' && <MovieCard movies={popularMoviesData} />}
                 {btnGroup === 'top_rated' && <MovieCard movies={topRatedMoviesData} />}
                 {btnGroup === 'upcoming' && <MovieCard movies={upcomingMoviesData} />}
             </div>
+
         </div>
     )
 }
