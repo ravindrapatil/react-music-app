@@ -66,50 +66,52 @@ function MovieCard(props) {
     }
 
     return (
-        <Grid container spacing={3}>
-            {
-                movies && movies.length && movies.map((item, index) => {
-                    const genres = moviegener.filter(genre => {
-                        const match = item.genre_ids.filter(genreId => genreId === genre.id);
-                        return match[0] === genre.id;
-                    });
+        <>
+            <Grid container spacing={3}>
+                {
+                    movies && movies.length && movies.map((item, index) => {
+                        const genres = moviegener.filter(genre => {
+                            const match = item.genre_ids.filter(genreId => genreId === genre.id);
+                            return match[0] === genre.id;
+                        });
 
-                    const ratingClass = () => {
-                        return item.vote_average > 7 ? 'green' : 'grey'
-                    }
+                        const ratingClass = () => {
+                            return item.vote_average > 7 ? 'green' : 'grey'
+                        }
 
-                    const path = `/movie/${item.id}`;
+                        const path = `/movie/${item.id}`;
 
-                    return (
-                        <Grid item xs={12} md={3} lg={2} sm={2} key={index}>
-                            <Badge className={`badgeStyle ${ratingClass()}`} anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }} badgeContent={item.vote_average} color="primary" />
-                            <Card className={classes.root}>
-                                <CardActionArea className={classes.cardBtn} onClick={() => gotoMovieDetails(path)}>
-                                    <CardMedia
-                                        component="img"
-                                        alt={item.title}
-                                        height="278"
-                                        image={item.poster_path ? `https://image.tmdb.org/t/p/w185//${item.poster_path}` : `${defaultImg}`}
-                                        title={item.title}
-                                    />
-                                    <CardContent>
-                                        <Typography variant="subtitle2" gutterBottom className={classes.title} title={item.title}>
-                                            {item.title}
-                                        </Typography>
-                                        <div className={classes.genreStyle}>
-                                            {genres && <GenreList genres={genres} />}
-                                        </div>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </Grid>
-                    )
-                })
-            }
-        </Grid>
+                        return (
+                            <Grid item xs={12} md={3} lg={2} sm={2} key={index}>
+                                <Badge className={`badgeStyle ${ratingClass()}`} anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }} badgeContent={item.vote_average} color="primary" />
+                                <Card className={classes.root}>
+                                    <CardActionArea className={classes.cardBtn} onClick={() => gotoMovieDetails(path)}>
+                                        <CardMedia
+                                            component="img"
+                                            alt={item.title}
+                                            height="278"
+                                            image={item.poster_path ? `https://image.tmdb.org/t/p/w185//${item.poster_path}` : `${defaultImg}`}
+                                            title={item.title}
+                                        />
+                                        <CardContent>
+                                            <Typography variant="subtitle2" gutterBottom className={classes.title} title={item.title}>
+                                                {item.title}
+                                            </Typography>
+                                            <div className={classes.genreStyle}>
+                                                {genres && <GenreList genres={genres} />}
+                                            </div>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                            </Grid>
+                        )
+                    })
+                }
+            </Grid>
+        </>
     )
 }
 

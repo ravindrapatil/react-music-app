@@ -1,32 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import themoviedb from '../../apis/themoviedb';
 import {
-    InputBase
+    InputBase,
+    Button
 } from '@material-ui/core/';
 import MovieCard from './MovieCard';
 
 function SearchMovies(props) {
-    const [searchQuery, setSearchQuery] = useState();
-    const [searchResult, setSearchResult] = useState([]);
+    const [moviesState, setmoviesState] = useState({
+        movies: [],
+        total_pages: null,
+        page_num: 1,
+        query: props.match.params.query
+    });
 
     useEffect(() => {
-        setSearchQuery(props.match.params.query);
-        makeSearchApiCall(searchQuery);
-    }, [props]);
+        setmoviesState({
+            ...moviesState, page_num: 1
+        });
+        makeSearchApiCall(moviesState.query, moviesState.page_num);
+    }, [moviesState.query])
 
     const handleOnChange = (e) => {
-        setSearchQuery(e.target.value);
-        makeSearchApiCall(searchQuery);
+        setmoviesState({
+            ...moviesState,
+            page_num: 1,
+            query: e.target.value
+        });
         if (e.target.value.length === 0) {
             props.history.goBack()
         }
     }
 
-    const makeSearchApiCall = async (searchQuery) => {
-        const searchResult = await themoviedb.getSearchMovies(searchQuery);
-        // setSearchResult(searchResult.data.results);
+    const makeSearchApiCall = async (searchQuery, page_num) => {
+        const searchResult = await themoviedb.getSearchMovies(searchQuery, page_num);
         if (searchResult && searchResult.data && searchResult.data.results.length) {
-            setSearchResult(searchResult);
+            setmoviesState({
+                ...moviesState, movies: searchResult, total_pages: searchResult.data.total_pages
+            })
+        }
+    }
+
+    const nextPage = () => {
+        if (moviesState.movies && moviesState.page_num < moviesState.total_pages) {
+            setmoviesState({
+                ...moviesState,
+                page_num: moviesState.page_num += 1
+            });
+            makeSearchApiCall(moviesState.query, moviesState.page_num);
+        }
+    };
+
+    const previousPage = () => {
+        if (moviesState.movies && moviesState.movies.data.results.length && moviesState.page_num !== 1) {
+            setmoviesState({
+                ...moviesState,
+                page_num: moviesState.page_num -= 1
+            });
+            makeSearchApiCall(moviesState.query, moviesState.page_num);
         }
     }
 
@@ -39,13 +70,24 @@ function SearchMovies(props) {
                         placeholder="Search..."
                         autoFocus
                         onChange={(e) => handleOnChange(e)}
-                        value={searchQuery}
+                        value={moviesState.query}
                     />
                 </form>
             </div>
             <div>
                 {
-                    searchResult && <MovieCard movies={searchResult} />
+                    moviesState.movies && <>
+                        <MovieCard movies={moviesState.movies} />
+                        <div style={{ margin: '20px auto', textAlign: 'center' }}>
+                            <Button onClick={() => previousPage()} variant="outlined" size="small" color="primary">
+                                Previous
+                            </Button>
+                            &nbsp;&nbsp;
+                            <Button onClick={() => nextPage()} variant="outlined" size="small" color="primary">
+                                Next
+                            </Button>
+                        </div>
+                    </>
                 }
             </div>
         </div>

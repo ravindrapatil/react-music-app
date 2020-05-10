@@ -116,10 +116,11 @@ export default {
             console.log(err);
         })
     },
-    getSearchMovies: (query) => {
+    getSearchMovies: (query, page_num) => {
         return axios.get(`${baseUrl}/3/search/movie`, {
             params: { 
                 query, 
+                page: page_num,
                 api_key: '5696692100a0d2aaeee00f4963a6d69e'
             }
         }).then(res => {
