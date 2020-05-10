@@ -38,7 +38,7 @@ function PersonDetails(props) {
 
     const getPersonsMovieCredits = async (id) => {
         const personCrewCredit = await themoviedb.getMovieCredits(id);
-        setpersonCrewList(personCrewCredit.data.crew);
+        setpersonCrewList(personCrewCredit);
     }
 
     useEffect(() => {
@@ -105,7 +105,7 @@ function PersonDetails(props) {
                 }
             </div>
             {
-                personCrewList && personCrewList.length &&
+                personCrewList &&
                 <div>
                     <Typography variant="h5" gutterBottom>KNOWN BY</Typography>
                     <MovieCard movies={personCrewList} />

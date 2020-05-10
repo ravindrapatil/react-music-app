@@ -4,7 +4,8 @@ import {
     ButtonGroup,
     Button,
     InputBase,
-    Grid
+    Grid,
+    Snackbar
 } from '@material-ui/core/';
 import { withRouter } from 'react-router-dom';
 import MovieCard from './MovieCard';
@@ -19,10 +20,30 @@ function Movies(props) {
     const [upcomingMoviesData, setUpcomingMoviesData] = useState([]);
     const [searchQuery, setsearchQuery] = useState('');
     const [btnGroup, setBtnGroup] = useState(movieGenerState);
+    const [snackbarOpen, setSnackbarOpen] = useState({
+        open: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
+
+    const setApiError = data => {
+        setSnackbarOpen({...snackbarOpen, open: true });
+    }
+
+    const {open, vertical, horizontal} = snackbarOpen;
 
     const getLatestMovies = async () => {
-        const latestMovies = await themoviedb.getLatestMovies();
-        setPopularMoviesData(latestMovies.data.results);
+        await themoviedb.getLatestMovies().then(res => {
+            if (res.status >= 200 && res.status < 300) {
+                setPopularMoviesData(res);
+            } else {
+                setApiError(true);
+            }
+        }).catch(err => {
+            setApiError(true);
+            console.log(err);
+        });
+
     }
 
     const setMovieGener = data => {
@@ -45,8 +66,16 @@ function Movies(props) {
     };
 
     const getTopRatedMovies = async () => {
-        const topRatedMovies = await themoviedb.getTopRatedMovies();
-        setTopRatedMoviesData(topRatedMovies.data.results);
+        await themoviedb.getTopRatedMovies().then(res => {
+            if (res.status >= 200 && res.status < 300) {
+                setTopRatedMoviesData(res);
+            } else {
+                setApiError(true);
+            }
+        }).catch(err => {
+            console.log(err);
+            setApiError(true);
+        });
     }
 
     const topRatedMovies = (newvalue) => {
@@ -56,8 +85,17 @@ function Movies(props) {
     };
 
     const upcomingMoviesList = async () => {
-        const upcomingMoviesResult = await themoviedb.getUpcomingMovies();
-        setUpcomingMoviesData(upcomingMoviesResult.data.results)
+        await themoviedb.getUpcomingMovies().then(res => {
+            if (res.status >= 200 && res.status < 300) {
+                setUpcomingMoviesData(res)
+            } else {
+                setApiError(true);
+            }
+        }).catch(err => {
+            console.log(err);
+            setApiError(true);
+        });
+
     }
 
     const upcomingMovies = (newvalue) => {
@@ -78,11 +116,13 @@ function Movies(props) {
         }
     }
 
-
+    const handleClose = () => {
+        setSnackbarOpen({ ...snackbarOpen, open: false });
+      };
 
     return (
         <div>
-            <Grid container spacing={3} style={{marginTop: '20px'}}>
+            <Grid container spacing={3} style={{ marginTop: '20px' }}>
                 <Grid item xs={12} md={6} lg={6} sm={6}>
                     <div>
                         <ButtonGroup color="primary" size="small" aria-label="outlined primary button group">
@@ -116,6 +156,15 @@ function Movies(props) {
                 {btnGroup === 'top_rated' && <MovieCard movies={topRatedMoviesData} />}
                 {btnGroup === 'upcoming' && <MovieCard movies={upcomingMoviesData} />}
             </div>
+
+            <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                key={`${vertical},${horizontal}`}
+                open={open}
+                onClose={handleClose}
+                message="Please check your network connection"
+                className="snackbarStyle"
+            />
 
         </div>
     )

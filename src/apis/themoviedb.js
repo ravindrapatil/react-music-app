@@ -19,10 +19,6 @@ export default {
                 sort_by: "popularity.desc",
                 language: 'en-US'
             }
-        }).then(res => {
-            return res
-        }).catch(err => {
-            console.log(err);
         })
     },
     getTopRatedMovies: () => {
@@ -32,10 +28,6 @@ export default {
                 api_key: '5696692100a0d2aaeee00f4963a6d69e',
                 language: 'en-US'
             }
-        }).then(res => {
-            return res
-        }).catch(err => {
-            console.log(err);
         })
     },
     getUpcomingMovies: () => {
@@ -45,10 +37,6 @@ export default {
                 api_key: '5696692100a0d2aaeee00f4963a6d69e',
                 language: 'en-US'
             }
-        }).then(res => {
-            return res
-        }).catch(err => {
-            console.log(err);
         })
     },
     getMovieDetails: (id) => {

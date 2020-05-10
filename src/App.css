@@ -150,3 +150,12 @@
 .moviesSearchPage .MuiInputBase-fullWidth { 
   width: auto !important;
 }
+
+.snackbarStyle .MuiSnackbarContent-root {
+  background-color: #f44336 !important;
+  text-align: center !important;
+}
+
+.snackbarStyle .MuiSnackbarContent-root .MuiSnackbarContent-message {
+  width: 100% !important;
+}

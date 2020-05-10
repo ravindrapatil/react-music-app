@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Card,
     CardActionArea,
@@ -51,7 +51,15 @@ let moviegener = [
 
 function MovieCard(props) {
     const classes = useStyles();
-    const { movies } = props;
+    const [movies, setmovies] = useState();
+
+    useEffect(() => {
+        if (props.movies && props.movies && props.movies.data && props.movies.data.results && props.movies.data.results.length) {
+            setmovies(props.movies.data.results);
+        } else if (props.movies && props.movies && props.movies.data && props.movies.data.crew && props.movies.data.crew.length) {
+            setmovies(props.movies.data.crew);
+        }
+    }, [props])
 
     const gotoMovieDetails = path => {
         props.history.push(path);
@@ -60,7 +68,7 @@ function MovieCard(props) {
     return (
         <Grid container spacing={3}>
             {
-                movies && movies.map((item, index) => {
+                movies && movies.length && movies.map((item, index) => {
                     const genres = moviegener.filter(genre => {
                         const match = item.genre_ids.filter(genreId => genreId === genre.id);
                         return match[0] === genre.id;

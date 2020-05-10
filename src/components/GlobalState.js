@@ -9,7 +9,8 @@ const initialState = {
     currentVideoSnippet: {},
     latestMoviesList: [],
     menuOpen: false,
-    movieGenerState: 'popular'
+    movieGenerState: 'popular',
+    someError: false
 }
 
 const reducer = (state, action) => {
@@ -49,6 +50,11 @@ const reducer = (state, action) => {
                 ...state,
                 movieGenerState: action.snippet
             }
+        case "setSomethingWrong":
+                return {
+                    ...state,
+                    someError: action.snippet
+                }    
         default:
             return state;
     }

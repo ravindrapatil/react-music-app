@@ -35,30 +35,38 @@ function MovieFullView(props) {
 
     const getMovieDetails = async (id) => {
         const result = await themoviedb.getMovieDetails(id);
-        setMovie(result.data);
+        if (result) {
+            setMovie(result.data);
+        }
     }
 
     const getMovieImages = async (id) => {
         const imagesResult = await themoviedb.getImages(id);
-        let posters = imagesResult.data.posters
-        posters.length = 10;
-        setMovieImages(posters);
+        if (imagesResult) {
+            let posters = imagesResult.data.posters
+            posters.length = 10;
+            setMovieImages(posters);
+        }
     }
 
     const getCastAndCrew = async (id) => {
         const credits = await themoviedb.getCredits(id);
-        const castcrew = credits.data.cast;
-        if (credits.data.cast.length > 10) {
-            castcrew.length = 40;
+        if (credits) {
+            const castcrew = credits.data.cast;
+            if (credits.data.cast.length > 10) {
+                castcrew.length = 40;
+            }
+            // castcrew.length = 40;
+            setCastAndCrew(castcrew);
         }
-        // castcrew.length = 40;
-        setCastAndCrew(castcrew);
     }
 
     const getRecommendedMovies = async (id) => {
         const recommendations = await themoviedb.getRecommendations(id);
-        const recMovies = recommendations.data.results;
-        setRecommendedMoviesList(recMovies);
+        if (recommendations) {
+            const recMovies = recommendations;
+            setRecommendedMoviesList(recMovies);
+        }
     }
 
     useEffect(() => {
@@ -78,11 +86,11 @@ function MovieFullView(props) {
     return (
         <>
             <div style={{ marginTop: '30px' }}>
-                {
+                {   
                     movie && <Grid container spacing={3}>
                         <Grid item xs={12} md={3} lg={3} sm={3}>
                             <img className={classes.imgStyle}
-                                src={movie.poster_path ? `https://image.tmdb.org/t/p/w300///${movie.poster_path}` :`${defaultImg}`}
+                                src={movie.poster_path ? `https://image.tmdb.org/t/p/w300///${movie.poster_path}` : `${defaultImg}`}
                                 alt={movie.title}
                                 title={movie.title} />
                         </Grid>
@@ -156,7 +164,7 @@ function MovieFullView(props) {
                 <CastAndCrewComponent castAndCrew={castAndCrew} />
             </div>
             {
-                recommendedMoviesList && recommendedMoviesList.length &&
+                recommendedMoviesList &&
                 <>
                     <Typography variant="h5" gutterBottom>RECOMMENDATIONS</Typography>
                     <MovieCard movies={recommendedMoviesList} />

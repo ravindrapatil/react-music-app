@@ -14,43 +14,21 @@ function SearchMovies(props) {
         makeSearchApiCall(searchQuery);
     }, [props]);
 
-    // const setParams = (query) => {
-    //     const searchParams = new URLSearchParams();
-    //     searchParams.set("", query || "");
-    //     return searchParams.toString();
-    // }
-
     const handleOnChange = (e) => {
         setSearchQuery(e.target.value);
         makeSearchApiCall(searchQuery);
-        // const url =  setParams(searchQuery);
-        // props.history.replace(`/searchmovies/${url}`);
-
         if (e.target.value.length === 0) {
             props.history.goBack()
         }
     }
 
-    // useEffect(() => {
-    //     props.history.push(`${searchQuery}`);
-    // }, []);
-
     const makeSearchApiCall = async (searchQuery) => {
         const searchResult = await themoviedb.getSearchMovies(searchQuery);
         // setSearchResult(searchResult.data.results);
-        if(searchResult && searchResult.data && searchResult.data.results.length) {
-            setSearchResult(searchResult.data.results);
+        if (searchResult && searchResult.data && searchResult.data.results.length) {
+            setSearchResult(searchResult);
         }
-        console.log(searchResult);
-        
     }
-
-    // useEffect(() => {
-    //     console.log(searchQuery);
-    //     makeSearchApiCall(searchQuery);
-    // }, [searchQuery])
-
-    console.log(searchQuery);
 
     return (
         <div>
