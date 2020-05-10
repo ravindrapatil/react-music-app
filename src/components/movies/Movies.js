@@ -5,7 +5,8 @@ import {
     Button,
     InputBase,
     Grid,
-    Snackbar
+    Snackbar,
+    CircularProgress
 } from '@material-ui/core/';
 import { withRouter } from 'react-router-dom';
 import MovieCard from './MovieCard';
@@ -18,6 +19,7 @@ function Movies(props) {
     const [popularMoviesData, setPopularMoviesData] = useState([]);
     const [topRatedMoviesData, setTopRatedMoviesData] = useState([]);
     const [upcomingMoviesData, setUpcomingMoviesData] = useState([]);
+    const [loading, setloading] = useState(false);
     const [searchQuery, setsearchQuery] = useState('');
     const [btnGroup, setBtnGroup] = useState(movieGenerState);
     const [snackbarOpen, setSnackbarOpen] = useState({
@@ -27,21 +29,25 @@ function Movies(props) {
     });
 
     const setApiError = data => {
-        setSnackbarOpen({...snackbarOpen, open: true });
+        setSnackbarOpen({ ...snackbarOpen, open: true });
     }
 
-    const {open, vertical, horizontal} = snackbarOpen;
+    const { open, vertical, horizontal } = snackbarOpen;
 
     const getLatestMovies = async () => {
+        setloading(true);
         await themoviedb.getLatestMovies().then(res => {
             if (res.status >= 200 && res.status < 300) {
                 setPopularMoviesData(res);
+                setloading(false);
             } else {
                 setApiError(true);
+                setloading(false);
             }
         }).catch(err => {
             setApiError(true);
             console.log(err);
+            setloading(false);
         });
 
     }
@@ -66,15 +72,19 @@ function Movies(props) {
     };
 
     const getTopRatedMovies = async () => {
+        setloading(true);
         await themoviedb.getTopRatedMovies().then(res => {
             if (res.status >= 200 && res.status < 300) {
                 setTopRatedMoviesData(res);
+                setloading(false);
             } else {
                 setApiError(true);
+                setloading(false);
             }
         }).catch(err => {
             console.log(err);
             setApiError(true);
+            setloading(false);
         });
     }
 
@@ -85,15 +95,19 @@ function Movies(props) {
     };
 
     const upcomingMoviesList = async () => {
+        setloading(true);
         await themoviedb.getUpcomingMovies().then(res => {
             if (res.status >= 200 && res.status < 300) {
                 setUpcomingMoviesData(res)
+                setloading(false);
             } else {
                 setApiError(true);
+                setloading(false);
             }
         }).catch(err => {
             console.log(err);
             setApiError(true);
+            setloading(false);
         });
 
     }
@@ -118,7 +132,7 @@ function Movies(props) {
 
     const handleClose = () => {
         setSnackbarOpen({ ...snackbarOpen, open: false });
-      };
+    };
 
     return (
         <div>
@@ -152,6 +166,7 @@ function Movies(props) {
 
             </div> */}
             <div className="moviesCard">
+                {loading && <div style={{margin: '30px auto', textAlign: 'center'}}><CircularProgress size={50} /></div>}
                 {btnGroup === 'popular' && <MovieCard movies={popularMoviesData} />}
                 {btnGroup === 'top_rated' && <MovieCard movies={topRatedMoviesData} />}
                 {btnGroup === 'upcoming' && <MovieCard movies={upcomingMoviesData} />}

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import themoviedb from '../../apis/themoviedb';
 import {
     InputBase,
-    Button
+    Button,
+    CircularProgress
 } from '@material-ui/core/';
 import { useDebounce } from 'use-debounce';
 import MovieCard from './MovieCard';
@@ -12,8 +13,10 @@ function SearchMovies(props) {
         movies: [],
         total_pages: null,
         page_num: 1,
-        query: props.match.params.query
+        query: props.match.params.query,
+        loading: false
     });
+    const [loading, setloading] = useState(false);
 
     const { movies, total_pages, page_num, query } = moviesState;
 
@@ -39,12 +42,16 @@ function SearchMovies(props) {
     }
 
     const makeSearchApiCall = async (searchQuery, page_num) => {
+        setloading(true);
+        debugger;
         const searchResult = await themoviedb.getSearchMovies(searchQuery, page_num);
         if (searchResult && searchResult.data && searchResult.data.results.length) {
             setmoviesState({
                 ...moviesState, movies: searchResult, total_pages: searchResult.data.total_pages
-            })
+            });
+            setloading(false);
         } else {
+            setloading(false);
             setmoviesState({
                 ...moviesState, movies: [], total_pages: searchResult.data.total_pages
             })
@@ -86,7 +93,10 @@ function SearchMovies(props) {
             </div>
             <div>
                 {
-                    movies && movies.length !== 0 ?
+                    loading ?
+                        <div style={{ margin: '30px auto', textAlign: 'center' }}><CircularProgress size={50} /></div>
+                        :
+                        movies &&
                         <>
                             <MovieCard movies={movies} />
                             {
@@ -100,10 +110,7 @@ function SearchMovies(props) {
                                     </Button>
                                 </div>
                             }
-
                         </>
-                        :
-                        <div style={{ textAlign: 'center', padding: '50px 20px' }}>No Movie/s found</div>
                 }
             </div>
         </div>

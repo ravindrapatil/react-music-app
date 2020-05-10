@@ -59,6 +59,7 @@
 
 .imagecontainer {
   position: relative;
+  cursor: pointer;
 }
 
 .imagecontainer .image {
