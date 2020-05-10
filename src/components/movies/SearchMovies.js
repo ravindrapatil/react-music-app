@@ -15,6 +15,8 @@ function SearchMovies(props) {
         query: props.match.params.query
     });
 
+    const { movies, total_pages, page_num, query } = moviesState;
+
     const [text, setText] = useState(props.match.params.query);
     const [debouncedText] = useDebounce(text, 1000);
 
@@ -25,8 +27,8 @@ function SearchMovies(props) {
     }, [debouncedText]);
 
     useEffect(() => {
-        makeSearchApiCall(moviesState.query, moviesState.page_num);
-    }, [moviesState.query]);
+        makeSearchApiCall(query, page_num);
+    }, [query]);
 
     const handleOnChange = (e) => {
         if (e.target.value.length === 0) {
@@ -50,7 +52,7 @@ function SearchMovies(props) {
     }
 
     const nextPage = () => {
-        if (moviesState.movies && moviesState.page_num < moviesState.total_pages) {
+        if (movies && page_num < total_pages) {
             setmoviesState({
                 ...moviesState,
                 page_num: moviesState.page_num += 1
@@ -60,7 +62,7 @@ function SearchMovies(props) {
     };
 
     const previousPage = () => {
-        if (moviesState.movies && moviesState.movies.data.results.length && moviesState.page_num !== 1) {
+        if (movies && movies.data.results.length && page_num !== 1) {
             setmoviesState({
                 ...moviesState,
                 page_num: moviesState.page_num -= 1
@@ -84,11 +86,11 @@ function SearchMovies(props) {
             </div>
             <div>
                 {
-                    moviesState.movies && moviesState.movies.length !== 0 ?
+                    movies && movies.length !== 0 ?
                         <>
-                            <MovieCard movies={moviesState.movies} />
+                            <MovieCard movies={movies} />
                             {
-                                moviesState.total_pages > 1 && <div style={{ margin: '20px auto', textAlign: 'center' }}>
+                                total_pages > 1 && <div style={{ margin: '20px auto', textAlign: 'center' }}>
                                     <Button onClick={() => previousPage()} variant="outlined" size="small" color="primary">
                                         Previous
                                     </Button>
