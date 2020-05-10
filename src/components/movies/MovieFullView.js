@@ -31,6 +31,7 @@ function MovieFullView(props) {
     const [movieImages, setMovieImages] = useState();
     const [castAndCrew, setCastAndCrew] = useState();
     const [recommendedMoviesList, setRecommendedMoviesList] = useState();
+    const [showHideRecSection, setshowHideRecSection] = useState(true);
     let revenue, budget, runtime, moviegenre;
 
     const getMovieDetails = async (id) => {
@@ -66,6 +67,8 @@ function MovieFullView(props) {
         if (recommendations) {
             const recMovies = recommendations;
             setRecommendedMoviesList(recMovies);
+            const showHide = recMovies.data.results.length === 0 ? false : true
+            setshowHideRecSection(showHide);
         }
     }
 
@@ -164,7 +167,7 @@ function MovieFullView(props) {
                 <CastAndCrewComponent castAndCrew={castAndCrew} />
             </div>
             {
-                recommendedMoviesList &&
+                showHideRecSection && recommendedMoviesList &&
                 <>
                     <Typography variant="h5" gutterBottom>RECOMMENDATIONS</Typography>
                     <MovieCard movies={recommendedMoviesList} />

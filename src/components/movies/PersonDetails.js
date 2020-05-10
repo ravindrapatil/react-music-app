@@ -25,6 +25,7 @@ function PersonDetails(props) {
     const [person, setperson] = useState();
     const [peronImagesList, setPeronImagesList] = useState();
     const [personCrewList, setpersonCrewList] = useState();
+    const [showHideKnownBySection, setshowHideKnownBySection] = useState(true);
 
     const getArtistDetails = async (id) => {
         const person = await themoviedb.getArtistDetails(id);
@@ -39,6 +40,9 @@ function PersonDetails(props) {
     const getPersonsMovieCredits = async (id) => {
         const personCrewCredit = await themoviedb.getMovieCredits(id);
         setpersonCrewList(personCrewCredit);
+        debugger;
+        const showHide = personCrewCredit.data.crew.length === 0 ? false : true
+        setshowHideKnownBySection(showHide);
     }
 
     useEffect(() => {
@@ -105,7 +109,7 @@ function PersonDetails(props) {
                 }
             </div>
             {
-                personCrewList &&
+                showHideKnownBySection && personCrewList &&
                 <div>
                     <Typography variant="h5" gutterBottom>KNOWN BY</Typography>
                     <MovieCard movies={personCrewList} />
