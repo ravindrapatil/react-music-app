@@ -4,6 +4,7 @@ import {
     InputBase,
     Button
 } from '@material-ui/core/';
+import { useDebounce } from 'use-debounce';
 import MovieCard from './MovieCard';
 
 function SearchMovies(props) {
@@ -14,21 +15,24 @@ function SearchMovies(props) {
         query: props.match.params.query
     });
 
+    const [text, setText] = useState(props.match.params.query);
+    const [debouncedText] = useDebounce(text, 1000);
+
     useEffect(() => {
         setmoviesState({
-            ...moviesState, page_num: 1
+            ...moviesState, page_num: 1, query: debouncedText
         });
+    }, [debouncedText]);
+
+    useEffect(() => {
         makeSearchApiCall(moviesState.query, moviesState.page_num);
-    }, [moviesState.query])
+    }, [moviesState.query]);
 
     const handleOnChange = (e) => {
-        setmoviesState({
-            ...moviesState,
-            page_num: 1,
-            query: e.target.value
-        });
         if (e.target.value.length === 0) {
             props.history.goBack()
+        } else {
+            setText(e.target.value);
         }
     }
 
@@ -37,6 +41,10 @@ function SearchMovies(props) {
         if (searchResult && searchResult.data && searchResult.data.results.length) {
             setmoviesState({
                 ...moviesState, movies: searchResult, total_pages: searchResult.data.total_pages
+            })
+        } else {
+            setmoviesState({
+                ...moviesState, movies: [], total_pages: searchResult.data.total_pages
             })
         }
     }
@@ -70,24 +78,30 @@ function SearchMovies(props) {
                         placeholder="Search..."
                         autoFocus
                         onChange={(e) => handleOnChange(e)}
-                        value={moviesState.query}
+                        value={text}
                     />
                 </form>
             </div>
             <div>
                 {
-                    moviesState.movies && <>
-                        <MovieCard movies={moviesState.movies} />
-                        <div style={{ margin: '20px auto', textAlign: 'center' }}>
-                            <Button onClick={() => previousPage()} variant="outlined" size="small" color="primary">
-                                Previous
-                            </Button>
-                            &nbsp;&nbsp;
-                            <Button onClick={() => nextPage()} variant="outlined" size="small" color="primary">
-                                Next
-                            </Button>
-                        </div>
-                    </>
+                    moviesState.movies && moviesState.movies.length !== 0 ?
+                        <>
+                            <MovieCard movies={moviesState.movies} />
+                            {
+                                moviesState.total_pages > 1 && <div style={{ margin: '20px auto', textAlign: 'center' }}>
+                                    <Button onClick={() => previousPage()} variant="outlined" size="small" color="primary">
+                                        Previous
+                                    </Button>
+                                    &nbsp;&nbsp;
+                                    <Button onClick={() => nextPage()} variant="outlined" size="small" color="primary">
+                                        Next
+                                    </Button>
+                                </div>
+                            }
+
+                        </>
+                        :
+                        <div style={{ textAlign: 'center', padding: '50px 20px' }}>No Movie/s found</div>
                 }
             </div>
         </div>
