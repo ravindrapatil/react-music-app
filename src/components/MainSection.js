@@ -5,6 +5,7 @@ import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 import HomeIcon from '@material-ui/icons/Home';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import HistoryIcon from '@material-ui/icons/History';
+import { Helmet } from "react-helmet";
 
 import { GlobalContext } from "./GlobalState";
 import SearchResult from './SearchResult';
@@ -112,6 +113,9 @@ function MainSection({ history, location }) {
 
     return (
         <>
+            <Helmet>
+                <title>SIM Music - Listen to songs</title>
+            </Helmet>
             <Container style={{ marginBottom: '100px' }}>
                 <Switch location={checkPrevLocation()}>
                     <Route

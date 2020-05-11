@@ -4,9 +4,11 @@ import {
     makeStyles,
     Typography
 } from '@material-ui/core/';
+import { Helmet } from "react-helmet";
 import themoviedb from '../../apis/themoviedb';
 import MoviesGallery from './MoviesGallery';
 import MovieCard from './MovieCard';
+import defaultImg from '../../images/default-movie.jpg';
 
 const useStyles = makeStyles(() => ({
     imgStyle: {
@@ -40,7 +42,6 @@ function PersonDetails(props) {
     const getPersonsMovieCredits = async (id) => {
         const personCrewCredit = await themoviedb.getMovieCredits(id);
         setpersonCrewList(personCrewCredit);
-        debugger;
         const showHide = personCrewCredit.data.crew.length === 0 ? false : true
         setshowHideKnownBySection(showHide);
     }
@@ -55,12 +56,17 @@ function PersonDetails(props) {
 
     return (
         <>
+            <Helmet>
+                {
+                    person && <title>SIM Music - {person.name}</title>
+                }
+            </Helmet>
             <div style={{ marginTop: '30px' }}>
                 {
                     person && <Grid container spacing={3}>
                         <Grid item xs={12} md={3} lg={3} sm={3}>
                             <img className={classes.imgStyle}
-                                src={`https://image.tmdb.org/t/p/w300///${person.profile_path}`}
+                                src={person.profile_path ? `https://image.tmdb.org/t/p/w300///${person.profile_path}` : `${defaultImg}`}
                                 alt={person.name}
                                 title={person.name} />
                         </Grid>

@@ -5,6 +5,7 @@ import {
     Button,
     CircularProgress
 } from '@material-ui/core/';
+import { Helmet } from "react-helmet";
 import { useDebounce } from 'use-debounce';
 import MovieCard from './MovieCard';
 
@@ -43,7 +44,6 @@ function SearchMovies(props) {
 
     const makeSearchApiCall = async (searchQuery, page_num) => {
         setloading(true);
-        debugger;
         const searchResult = await themoviedb.getSearchMovies(searchQuery, page_num);
         if (searchResult && searchResult.data && searchResult.data.results.length) {
             setmoviesState({
@@ -80,6 +80,9 @@ function SearchMovies(props) {
 
     return (
         <div>
+            <Helmet>
+            <title>SIM Music - Search Movies</title>
+            </Helmet>
             <div>
                 <form className="searchForm searchInputForm" noValidate autoComplete="off">
                     <InputBase

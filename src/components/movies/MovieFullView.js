@@ -4,6 +4,7 @@ import {
     makeStyles,
     Typography
 } from '@material-ui/core/';
+import { Helmet } from "react-helmet";
 
 import themoviedb from '../../apis/themoviedb';
 import GenreList from './GenreList';
@@ -88,6 +89,11 @@ function MovieFullView(props) {
 
     return (
         <>
+            <Helmet>
+                {
+                    movie ? <title>{`SIM Music - ${movie.title}`}</title> : <title>{`SIM Music - Movie Details`}</title>
+                }
+            </Helmet>
             <div style={{ marginTop: '30px' }}>
                 {   
                     movie && <Grid container spacing={3}>

@@ -8,6 +8,7 @@ import {
     Snackbar,
     CircularProgress
 } from '@material-ui/core/';
+import { Helmet } from "react-helmet";
 import { withRouter } from 'react-router-dom';
 import MovieCard from './MovieCard';
 
@@ -166,10 +167,31 @@ function Movies(props) {
 
             </div> */}
             <div className="moviesCard">
-                {loading && <div style={{margin: '30px auto', textAlign: 'center'}}><CircularProgress size={50} /></div>}
-                {btnGroup === 'popular' && <MovieCard movies={popularMoviesData} />}
-                {btnGroup === 'top_rated' && <MovieCard movies={topRatedMoviesData} />}
-                {btnGroup === 'upcoming' && <MovieCard movies={upcomingMoviesData} />}
+                {loading && <div style={{ margin: '30px auto', textAlign: 'center' }}><CircularProgress size={50} /></div>}
+                {btnGroup === 'popular' &&
+                    <>
+                        <Helmet>
+                            <title>SIM Music - Popular Movies</title>
+                        </Helmet>
+                        <MovieCard movies={popularMoviesData} />
+                    </>
+                }
+                {btnGroup === 'top_rated' && 
+                    <>
+                        <Helmet>
+                            <title>SIM Music - Top Rated Movies</title>
+                        </Helmet>
+                        <MovieCard movies={topRatedMoviesData} />
+                    </>
+                }
+                {btnGroup === 'upcoming' && 
+                    <>
+                        <Helmet>
+                            <title>SIM Music - Upcoming Movies</title>
+                        </Helmet>
+                        <MovieCard movies={upcomingMoviesData} />
+                    </>
+                }
             </div>
 
             <Snackbar

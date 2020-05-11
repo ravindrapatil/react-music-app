@@ -7,6 +7,7 @@ import {
     Divider
 } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
+import { Helmet } from "react-helmet";
 
 import { GlobalContext } from './GlobalState';
 
@@ -64,6 +65,11 @@ function RelatedVideos() {
 
     return (
         <div>
+            <Helmet>
+                {
+                    <title>SIM Music - Related Music</title>
+                }
+            </Helmet>
             {
                 relatedVideos && relatedVideos.length ? template : noResultsMsg
             }
