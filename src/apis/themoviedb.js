@@ -53,10 +53,6 @@ export default {
             params: {
                 api_key: '5696692100a0d2aaeee00f4963a6d69e'
             }
-        }).then(res => {
-            return res
-        }).catch(err => {
-            console.log(err);
         })
     },
     getImages: (id) => {
@@ -64,10 +60,6 @@ export default {
             params: {
                 api_key: '5696692100a0d2aaeee00f4963a6d69e'
             }
-        }).then(res => {
-            return res
-        }).catch(err => {
-            console.log(err);
         })
     },
     getPersonImages: (id) => {
@@ -82,10 +74,6 @@ export default {
             params: {
                 api_key: '5696692100a0d2aaeee00f4963a6d69e'
             }
-        }).then(res => {
-            return res
-        }).catch(err => {
-            console.log(err);
         })
     },
     getRecommendations: id => {
@@ -93,10 +81,6 @@ export default {
             params: {
                 api_key: '5696692100a0d2aaeee00f4963a6d69e'
             }
-        }).then(res => {
-            return res
-        }).catch(err => {
-            console.log(err);
         })
     },
     getArtistDetails: id => {
