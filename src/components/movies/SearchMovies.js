@@ -3,7 +3,8 @@ import themoviedb from '../../apis/themoviedb';
 import {
     InputBase,
     Button,
-    CircularProgress
+    CircularProgress,
+    Snackbar
 } from '@material-ui/core/';
 import { Helmet } from "react-helmet";
 import { useDebounce } from 'use-debounce';
@@ -18,6 +19,11 @@ function SearchMovies(props) {
         loading: false
     });
     const [loading, setloading] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState({
+        open: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
 
     const { movies, total_pages, page_num, query } = moviesState;
 
@@ -42,20 +48,36 @@ function SearchMovies(props) {
         }
     }
 
+    const setApiError = data => {
+        setSnackbarOpen({ ...snackbarOpen, open: true });
+    }
+    const { open, vertical, horizontal } = snackbarOpen;
+
+    const handleClose = () => {
+        setSnackbarOpen({ ...snackbarOpen, open: false });
+    }
+
     const makeSearchApiCall = async (searchQuery, page_num) => {
         setloading(true);
-        const searchResult = await themoviedb.getSearchMovies(searchQuery, page_num);
-        if (searchResult && searchResult.data && searchResult.data.results.length) {
-            setmoviesState({
-                ...moviesState, movies: searchResult, total_pages: searchResult.data.total_pages
-            });
+        await themoviedb.getSearchMovies(searchQuery, page_num).then(res => {
+            if (res.status >= 200 && res.status < 300) {
+                setmoviesState({
+                    ...moviesState, movies: res, total_pages: res.data.total_pages
+                });
+                setloading(false);
+            } else {
+                setloading(false);
+                setApiError(true);
+                setmoviesState({
+                    ...moviesState, movies: [], total_pages: res.data.total_pages
+                })
+            }
+        }).catch(err => {
+            setApiError(true);
+            console.log(err);
             setloading(false);
-        } else {
-            setloading(false);
-            setmoviesState({
-                ...moviesState, movies: [], total_pages: searchResult.data.total_pages
-            })
-        }
+        });
+
     }
 
     const nextPage = () => {
@@ -81,7 +103,7 @@ function SearchMovies(props) {
     return (
         <div>
             <Helmet>
-            <title>SIM Music - Search Movies</title>
+                <title>SIM Music - Search Movies</title>
             </Helmet>
             <div>
                 <form className="searchForm searchInputForm" noValidate autoComplete="off">
@@ -116,6 +138,14 @@ function SearchMovies(props) {
                         </>
                 }
             </div>
+            <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                key={`${vertical},${horizontal}`}
+                open={open}
+                onClose={handleClose}
+                message="Please check your network connection"
+                className="snackbarStyle"
+            />
         </div>
     )
 }

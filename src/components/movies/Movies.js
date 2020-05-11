@@ -11,15 +11,18 @@ import {
 import { Helmet } from "react-helmet";
 import { withRouter } from 'react-router-dom';
 import MovieCard from './MovieCard';
+import Pagination from './Pagination';
 
 import { GlobalContext } from "../GlobalState";
 
 function Movies(props) {
     const [{ movieGenerState }, dispatch] = useContext(GlobalContext);
 
-    const [popularMoviesData, setPopularMoviesData] = useState([]);
-    const [topRatedMoviesData, setTopRatedMoviesData] = useState([]);
-    const [upcomingMoviesData, setUpcomingMoviesData] = useState([]);
+    const [popularMoviesData, setPopularMoviesData] = useState({
+        movies: {},
+        total_pages: null,
+        page_num: 1
+    });
     const [loading, setloading] = useState(false);
     const [searchQuery, setsearchQuery] = useState('');
     const [btnGroup, setBtnGroup] = useState(movieGenerState);
@@ -29,102 +32,119 @@ function Movies(props) {
         horizontal: 'center',
     });
 
+    const { movies, total_pages, page_num } = popularMoviesData;
+
     const setApiError = data => {
         setSnackbarOpen({ ...snackbarOpen, open: true });
     }
-
     const { open, vertical, horizontal } = snackbarOpen;
-
-    const getLatestMovies = async () => {
-        setloading(true);
-        await themoviedb.getLatestMovies().then(res => {
-            if (res.status >= 200 && res.status < 300) {
-                setPopularMoviesData(res);
-                setloading(false);
-            } else {
-                setApiError(true);
-                setloading(false);
-            }
-        }).catch(err => {
-            setApiError(true);
-            console.log(err);
-            setloading(false);
-        });
-
-    }
 
     const setMovieGener = data => {
         dispatch({ type: 'setMovieGener', snippet: data });
     }
 
+    const getMovies = async (type, page_num) => {
+        let moviesList;
+        if(type === 'popular') {
+            moviesList = themoviedb.getPopularMovies(page_num);
+        } else if(type === 'top_rated') {
+            moviesList = themoviedb.getTopRatedMovies(page_num);
+        } else if(type === 'upcoming') {
+            moviesList = themoviedb.getUpcomingMovies(page_num);
+        }
+
+        await moviesList.then(res => {
+            if (res.status >= 200 && res.status < 300) {
+                setPopularMoviesData({
+                    ...popularMoviesData,
+                    movies: res, total_pages: res.data.total_pages
+                });
+                setloading(false);
+            } else {
+                setApiError(true);
+                setloading(false);
+            }
+        }).catch(err => {
+            setApiError(true);
+            console.log(err);
+            setloading(false);
+        });
+
+        // console.log(moviesList);
+        // setPopularMoviesData({
+        //     ...popularMoviesData,
+        //     movies: moviesList, total_pages: moviesList.data.total_pages
+        // });
+    }
+
+    const nextPage = () => {
+        if(movies && page_num < total_pages) {
+            setPopularMoviesData({
+                ...popularMoviesData,
+                page_num: popularMoviesData.page_num += 1
+            });
+            if(btnGroup === 'popular') {
+                getMovies(btnGroup, popularMoviesData.page_num);
+            } else if (btnGroup === 'top_rated') { 
+                getMovies(btnGroup, popularMoviesData.page_num);
+            } else if (btnGroup === 'upcoming') { 
+                getMovies(btnGroup, popularMoviesData.page_num);
+            }
+        }
+    };
+
+    const previousPage = () => {
+        if(movies && movies.data.results.length && page_num !== 1) {
+            setPopularMoviesData({
+                ...popularMoviesData,
+                page_num: popularMoviesData.page_num -= 1
+            });
+            if(btnGroup === 'popular') {
+                getMovies(btnGroup, popularMoviesData.page_num);
+            } else if (btnGroup === 'top_rated') { 
+                getMovies(btnGroup, popularMoviesData.page_num);
+            } else if (btnGroup === 'upcoming') { 
+                getMovies(btnGroup, popularMoviesData.page_num);
+            }
+        }
+    }
+
     useEffect(() => {
         if (btnGroup === 'popular') {
-            getLatestMovies();
+            getMovies('popular', popularMoviesData.page_num);
         } else if (btnGroup === 'top_rated') {
-            getTopRatedMovies();
+            getMovies('top_rated', popularMoviesData.page_num);
         } else if (btnGroup === 'upcoming') {
-            upcomingMoviesList();
+            getMovies('upcoming', popularMoviesData.page_num);
         }
     }, [btnGroup])
 
     const popularMovies = (newvalue) => {
         setBtnGroup(newvalue);
-        getLatestMovies();
+        setPopularMoviesData({
+            ...popularMoviesData, page_num : 1
+        })
     };
-
-    const getTopRatedMovies = async () => {
-        setloading(true);
-        await themoviedb.getTopRatedMovies().then(res => {
-            if (res.status >= 200 && res.status < 300) {
-                setTopRatedMoviesData(res);
-                setloading(false);
-            } else {
-                setApiError(true);
-                setloading(false);
-            }
-        }).catch(err => {
-            console.log(err);
-            setApiError(true);
-            setloading(false);
-        });
-    }
 
     const topRatedMovies = (newvalue) => {
         setBtnGroup(newvalue);
-        // getTopRatedMovies()
         setMovieGener(newvalue);
+        setPopularMoviesData({
+            ...popularMoviesData, page_num : 1
+        })
     };
-
-    const upcomingMoviesList = async () => {
-        setloading(true);
-        await themoviedb.getUpcomingMovies().then(res => {
-            if (res.status >= 200 && res.status < 300) {
-                setUpcomingMoviesData(res)
-                setloading(false);
-            } else {
-                setApiError(true);
-                setloading(false);
-            }
-        }).catch(err => {
-            console.log(err);
-            setApiError(true);
-            setloading(false);
-        });
-
-    }
 
     const upcomingMovies = (newvalue) => {
         setBtnGroup(newvalue);
-        // upcomingMoviesList();
         setMovieGener(newvalue);
+        setPopularMoviesData({
+            ...popularMoviesData, page_num : 1
+        })
     };
 
     const handleOnChange = (e) => {
         if (e.target.value.length > 0) {
             props.history.push(`/searchmovies/${e.target.value}`);
-            // props.history.push({
-            //     pathname: '/searchmovies'
-            // });
             setsearchQuery(e.target.value);
         } else {
             setsearchQuery(e.target.value);
@@ -173,23 +193,35 @@ function Movies(props) {
                         <Helmet>
                             <title>SIM Music - Popular Movies</title>
                         </Helmet>
-                        <MovieCard movies={popularMoviesData} />
+                        <MovieCard movies={popularMoviesData.movies} />
+                        <Pagination popularMoviesData={popularMoviesData}
+                            setPopularMoviesData={setPopularMoviesData}
+                            previousPage={previousPage} 
+                            nextPage={nextPage} />
                     </>
                 }
-                {btnGroup === 'top_rated' && 
+                {btnGroup === 'top_rated' &&
                     <>
                         <Helmet>
                             <title>SIM Music - Top Rated Movies</title>
                         </Helmet>
-                        <MovieCard movies={topRatedMoviesData} />
+                        <MovieCard movies={popularMoviesData.movies} />
+                        <Pagination popularMoviesData={popularMoviesData}
+                            setPopularMoviesData={setPopularMoviesData}
+                            previousPage={previousPage} 
+                            nextPage={nextPage} />
                     </>
                 }
-                {btnGroup === 'upcoming' && 
+                {btnGroup === 'upcoming' &&
                     <>
                         <Helmet>
                             <title>SIM Music - Upcoming Movies</title>
                         </Helmet>
-                        <MovieCard movies={upcomingMoviesData} />
+                        <MovieCard movies={popularMoviesData.movies} />
+                        <Pagination popularMoviesData={popularMoviesData}
+                            setPopularMoviesData={setPopularMoviesData}
+                            previousPage={previousPage} 
+                            nextPage={nextPage} />
                     </>
                 }
             </div>

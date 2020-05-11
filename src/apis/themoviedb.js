@@ -21,19 +21,28 @@ export default {
             }
         })
     },
-    getTopRatedMovies: () => {
-        return axios.get(`${baseUrl}/3/movie/top_rated`, {
+    getPopularMovies: (page_num) => {
+        return axios.get(`${baseUrl}/3/movie/popular`, {
             params: {
-                page: 1,
+                page: page_num,
                 api_key: '5696692100a0d2aaeee00f4963a6d69e',
                 language: 'en-US'
             }
         })
     },
-    getUpcomingMovies: () => {
+    getTopRatedMovies: (page_num) => {
+        return axios.get(`${baseUrl}/3/movie/top_rated`, {
+            params: {
+                page: page_num,
+                api_key: '5696692100a0d2aaeee00f4963a6d69e',
+                language: 'en-US'
+            }
+        })
+    },
+    getUpcomingMovies: (page_num) => {
         return axios.get(`${baseUrl}/3/movie/upcoming`, {
             params: {
-                page: 1,
+                page: page_num,
                 api_key: '5696692100a0d2aaeee00f4963a6d69e',
                 language: 'en-US'
             }
@@ -123,10 +132,6 @@ export default {
                 page: page_num,
                 api_key: '5696692100a0d2aaeee00f4963a6d69e'
             }
-        }).then(res => {
-            return res
-        }).catch(err => {
-            console.log(err);
         })
     }
 }
