@@ -75,10 +75,6 @@ export default {
             params: {
                 api_key: '5696692100a0d2aaeee00f4963a6d69e'
             }
-        }).then(res => {
-            return res
-        }).catch(err => {
-            console.log(err);
         })
     },
     getCredits: (id) => {
@@ -108,10 +104,6 @@ export default {
             params: {
                 api_key: '5696692100a0d2aaeee00f4963a6d69e'
             }
-        }).then(res => {
-            return res
-        }).catch(err => {
-            console.log(err);
         })
     },
     getMovieCredits: id => {
@@ -119,10 +111,6 @@ export default {
             params: {
                 api_key: '5696692100a0d2aaeee00f4963a6d69e'
             }
-        }).then(res => {
-            return res
-        }).catch(err => {
-            console.log(err);
         })
     },
     getSearchMovies: (query, page_num) => {

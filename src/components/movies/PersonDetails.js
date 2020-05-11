@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
     Grid,
     makeStyles,
-    Typography
+    Typography,
+    CircularProgress,
+    Snackbar
 } from '@material-ui/core/';
 import { Helmet } from "react-helmet";
 import themoviedb from '../../apis/themoviedb';
@@ -28,22 +30,60 @@ function PersonDetails(props) {
     const [peronImagesList, setPeronImagesList] = useState();
     const [personCrewList, setpersonCrewList] = useState();
     const [showHideKnownBySection, setshowHideKnownBySection] = useState(true);
+    const [loading, setloading] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState({
+        open: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
+    const setApiError = data => {
+        setSnackbarOpen({ ...snackbarOpen, open: true });
+    }
+    const { open, vertical, horizontal } = snackbarOpen;
 
     const getArtistDetails = async (id) => {
-        const person = await themoviedb.getArtistDetails(id);
-        setperson(person.data)
+        setloading(true);
+        await themoviedb.getArtistDetails(id).then(res => {
+            if (res.status >= 200 && res.status < 300) {
+                setperson(res.data);
+                setloading(false);
+            } else {
+                setApiError(true);
+                setloading(false);
+            }
+        }).catch(err => {
+            console.log(err);
+            setApiError(true);
+            setloading(false);
+        });
     }
 
     const getPersonImageList = async (id) => {
-        const personImages = await themoviedb.getPersonImages(id);
-        setPeronImagesList(personImages.data.profiles);
+        await themoviedb.getPersonImages(id).then(res => {
+            if (res.status >= 200 && res.status < 300) {
+                setPeronImagesList(res.data.profiles);
+            } else {
+                setApiError(true);
+            }
+        }).catch(err => {
+            console.log(err);
+            setApiError(true);
+        });
     }
 
     const getPersonsMovieCredits = async (id) => {
-        const personCrewCredit = await themoviedb.getMovieCredits(id);
-        setpersonCrewList(personCrewCredit);
-        const showHide = personCrewCredit.data.crew.length === 0 ? false : true
-        setshowHideKnownBySection(showHide);
+        await themoviedb.getMovieCredits(id).then(res => {
+            if (res.status >= 200 && res.status < 300) {
+                setpersonCrewList(res);
+                const showHide = res.data.crew.length === 0 ? false : true
+                setshowHideKnownBySection(showHide);
+            } else {
+                setApiError(true);
+            }
+        }).catch(err => {
+            console.log(err);
+            setApiError(true);
+        });
     }
 
     useEffect(() => {
@@ -52,68 +92,76 @@ function PersonDetails(props) {
         getPersonsMovieCredits(id);
     }, [id]);
 
-    console.log(person);
+    const handleClose = () => {
+        setSnackbarOpen({ ...snackbarOpen, open: false });
+    };
 
     return (
         <>
-            <Helmet>
-                {
-                    person && <title>SIM Music - {person.name}</title>
-                }
-            </Helmet>
-            <div style={{ marginTop: '30px' }}>
-                {
-                    person && <Grid container spacing={3}>
-                        <Grid item xs={12} md={3} lg={3} sm={3}>
-                            <img className={classes.imgStyle}
-                                src={person.profile_path ? `https://image.tmdb.org/t/p/w300///${person.profile_path}` : `${defaultImg}`}
-                                alt={person.name}
-                                title={person.name} />
-                        </Grid>
-                        <Grid item xs={12} md={9} lg={9} sm={9}>
-                            <>
-                                <div>
-                                    <div className={classes.content}>
-                                        <Typography variant="h5" gutterBottom>
-                                            {person.name}
-                                        </Typography>
-                                    </div>
+            {
+                loading ? <div style={{ margin: '30px auto', textAlign: 'center' }}><CircularProgress size={50} /></div>
+                    :
+                    <>
+                        <Helmet>
+                            {
+                                person && <title>SIM Music - {person.name}</title>
+                            }
+                        </Helmet>
+                        <div style={{ marginTop: '30px' }}>
+                            {
+                                person && <Grid container spacing={3}>
+                                    <Grid item xs={12} md={3} lg={3} sm={3}>
+                                        <img className={classes.imgStyle}
+                                            src={person.profile_path ? `https://image.tmdb.org/t/p/w300///${person.profile_path}` : `${defaultImg}`}
+                                            alt={person.name}
+                                            title={person.name} />
+                                    </Grid>
+                                    <Grid item xs={12} md={9} lg={9} sm={9}>
+                                        <>
+                                            <div>
+                                                <div className={classes.content}>
+                                                    <Typography variant="h5" gutterBottom>
+                                                        {person.name}
+                                                    </Typography>
+                                                </div>
 
-                                    <div className={classes.content}>
-                                        <Typography variant="caption" gutterBottom>
-                                            Birthday:
+                                                <div className={classes.content}>
+                                                    <Typography variant="caption" gutterBottom>
+                                                        Birthday:
                                 </Typography>
-                                        <Typography variant="body2" gutterBottom>
-                                            {person.birthday}
-                                        </Typography>
-                                    </div>
+                                                    <Typography variant="body2" gutterBottom>
+                                                        {person.birthday}
+                                                    </Typography>
+                                                </div>
 
-                                    <div className={classes.content}>
-                                        <Typography variant="caption" gutterBottom>
-                                            Place of birth:
+                                                <div className={classes.content}>
+                                                    <Typography variant="caption" gutterBottom>
+                                                        Place of birth:
                                 </Typography>
-                                        <Typography variant="body2" gutterBottom>
-                                            {person.place_of_birth}
-                                        </Typography>
-                                    </div>
+                                                    <Typography variant="body2" gutterBottom>
+                                                        {person.place_of_birth}
+                                                    </Typography>
+                                                </div>
 
-                                    <div className={classes.content}>
-                                        <Typography variant="caption" gutterBottom>
-                                            Biography:
+                                                <div className={classes.content}>
+                                                    <Typography variant="caption" gutterBottom>
+                                                        Biography:
                                 </Typography>
-                                        <Typography variant="body2" gutterBottom>
-                                            {person.biography}
-                                        </Typography>
-                                    </div>
-                                </div>
-                                <div>
-                                    <MoviesGallery movieImages={peronImagesList} />
-                                </div>
-                            </>
-                        </Grid>
-                    </Grid>
-                }
-            </div>
+                                                    <Typography variant="body2" gutterBottom>
+                                                        {person.biography}
+                                                    </Typography>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <MoviesGallery movieImages={peronImagesList} />
+                                            </div>
+                                        </>
+                                    </Grid>
+                                </Grid>
+                            }
+                        </div>
+                    </>
+            }
             {
                 showHideKnownBySection && personCrewList &&
                 <div>
@@ -121,7 +169,14 @@ function PersonDetails(props) {
                     <MovieCard movies={personCrewList} />
                 </div>
             }
-
+            <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                key={`${vertical},${horizontal}`}
+                open={open}
+                onClose={handleClose}
+                message="Oops. Something went wrong. Please try again later"
+                className="snackbarStyle"
+            />
         </>
     )
 }
