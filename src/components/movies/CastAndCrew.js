@@ -46,7 +46,7 @@ function CastAndCrew(props) {
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '10px' }}>
                 <Typography variant="h5" gutterBottom>TOP BILLED CAST</Typography>
                 {
-                    casts && casts.length > 11 && <Button variant="outlined" size="small" onClick={showMore}
+                    casts && casts.length > 12 && <Button variant="outlined" size="small" onClick={showMore}
                         style={{
                             fontSize: '11px',
                             margin: '3px 10px 8px',

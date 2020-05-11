@@ -44,12 +44,13 @@ function Movies(props) {
     }
 
     const getMovies = async (type, page_num) => {
+        setloading(true);
         let moviesList;
-        if(type === 'popular') {
+        if (type === 'popular') {
             moviesList = themoviedb.getPopularMovies(page_num);
-        } else if(type === 'top_rated') {
+        } else if (type === 'top_rated') {
             moviesList = themoviedb.getTopRatedMovies(page_num);
-        } else if(type === 'upcoming') {
+        } else if (type === 'upcoming') {
             moviesList = themoviedb.getUpcomingMovies(page_num);
         }
 
@@ -69,41 +70,35 @@ function Movies(props) {
             console.log(err);
             setloading(false);
         });
-
-        // console.log(moviesList);
-        // setPopularMoviesData({
-        //     ...popularMoviesData,
-        //     movies: moviesList, total_pages: moviesList.data.total_pages
-        // });
     }
 
     const nextPage = () => {
-        if(movies && page_num < total_pages) {
+        if (movies && page_num < total_pages) {
             setPopularMoviesData({
                 ...popularMoviesData,
                 page_num: popularMoviesData.page_num += 1
             });
-            if(btnGroup === 'popular') {
+            if (btnGroup === 'popular') {
                 getMovies(btnGroup, popularMoviesData.page_num);
-            } else if (btnGroup === 'top_rated') { 
+            } else if (btnGroup === 'top_rated') {
                 getMovies(btnGroup, popularMoviesData.page_num);
-            } else if (btnGroup === 'upcoming') { 
+            } else if (btnGroup === 'upcoming') {
                 getMovies(btnGroup, popularMoviesData.page_num);
             }
         }
     };
 
     const previousPage = () => {
-        if(movies && movies.data.results.length && page_num !== 1) {
+        if (movies && movies.data.results.length && page_num !== 1) {
             setPopularMoviesData({
                 ...popularMoviesData,
                 page_num: popularMoviesData.page_num -= 1
             });
-            if(btnGroup === 'popular') {
+            if (btnGroup === 'popular') {
                 getMovies(btnGroup, popularMoviesData.page_num);
-            } else if (btnGroup === 'top_rated') { 
+            } else if (btnGroup === 'top_rated') {
                 getMovies(btnGroup, popularMoviesData.page_num);
-            } else if (btnGroup === 'upcoming') { 
+            } else if (btnGroup === 'upcoming') {
                 getMovies(btnGroup, popularMoviesData.page_num);
             }
         }
@@ -122,7 +117,7 @@ function Movies(props) {
     const popularMovies = (newvalue) => {
         setBtnGroup(newvalue);
         setPopularMoviesData({
-            ...popularMoviesData, page_num : 1
+            ...popularMoviesData, page_num: 1
         })
     };
 
@@ -130,7 +125,7 @@ function Movies(props) {
         setBtnGroup(newvalue);
         setMovieGener(newvalue);
         setPopularMoviesData({
-            ...popularMoviesData, page_num : 1
+            ...popularMoviesData, page_num: 1
         })
     };
 
@@ -138,7 +133,7 @@ function Movies(props) {
         setBtnGroup(newvalue);
         setMovieGener(newvalue);
         setPopularMoviesData({
-            ...popularMoviesData, page_num : 1
+            ...popularMoviesData, page_num: 1
         })
     };
 
@@ -182,47 +177,48 @@ function Movies(props) {
                 </Grid>
             </Grid>
 
-            {/* <div style={{ display: 'flex', justifyContent: 'space-between', padding: '17px 0 0' }}>
-
-
-            </div> */}
             <div className="moviesCard">
-                {loading && <div style={{ margin: '30px auto', textAlign: 'center' }}><CircularProgress size={50} /></div>}
-                {btnGroup === 'popular' &&
-                    <>
-                        <Helmet>
-                            <title>SIM Music - Popular Movies</title>
-                        </Helmet>
-                        <MovieCard movies={popularMoviesData.movies} />
-                        <Pagination popularMoviesData={popularMoviesData}
-                            setPopularMoviesData={setPopularMoviesData}
-                            previousPage={previousPage} 
-                            nextPage={nextPage} />
-                    </>
-                }
-                {btnGroup === 'top_rated' &&
-                    <>
-                        <Helmet>
-                            <title>SIM Music - Top Rated Movies</title>
-                        </Helmet>
-                        <MovieCard movies={popularMoviesData.movies} />
-                        <Pagination popularMoviesData={popularMoviesData}
-                            setPopularMoviesData={setPopularMoviesData}
-                            previousPage={previousPage} 
-                            nextPage={nextPage} />
-                    </>
-                }
-                {btnGroup === 'upcoming' &&
-                    <>
-                        <Helmet>
-                            <title>SIM Music - Upcoming Movies</title>
-                        </Helmet>
-                        <MovieCard movies={popularMoviesData.movies} />
-                        <Pagination popularMoviesData={popularMoviesData}
-                            setPopularMoviesData={setPopularMoviesData}
-                            previousPage={previousPage} 
-                            nextPage={nextPage} />
-                    </>
+                {
+                    loading ? <div style={{ margin: '30px auto', textAlign: 'center' }}><CircularProgress size={50} /></div>
+                        :
+                        <div>
+                            {btnGroup === 'popular' &&
+                                <>
+                                    <Helmet>
+                                        <title>SIM Music - Popular Movies</title>
+                                    </Helmet>
+                                    <MovieCard movies={popularMoviesData.movies} />
+                                    <Pagination popularMoviesData={popularMoviesData}
+                                        setPopularMoviesData={setPopularMoviesData}
+                                        previousPage={previousPage}
+                                        nextPage={nextPage} />
+                                </>
+                            }
+                            {btnGroup === 'top_rated' &&
+                                <>
+                                    <Helmet>
+                                        <title>SIM Music - Top Rated Movies</title>
+                                    </Helmet>
+                                    <MovieCard movies={popularMoviesData.movies} />
+                                    <Pagination popularMoviesData={popularMoviesData}
+                                        setPopularMoviesData={setPopularMoviesData}
+                                        previousPage={previousPage}
+                                        nextPage={nextPage} />
+                                </>
+                            }
+                            {btnGroup === 'upcoming' &&
+                                <>
+                                    <Helmet>
+                                        <title>SIM Music - Upcoming Movies</title>
+                                    </Helmet>
+                                    <MovieCard movies={popularMoviesData.movies} />
+                                    <Pagination popularMoviesData={popularMoviesData}
+                                        setPopularMoviesData={setPopularMoviesData}
+                                        previousPage={previousPage}
+                                        nextPage={nextPage} />
+                                </>
+                            }
+                        </div>
                 }
             </div>
 
