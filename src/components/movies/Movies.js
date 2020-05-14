@@ -116,6 +116,7 @@ function Movies(props) {
 
     const popularMovies = (newvalue) => {
         setBtnGroup(newvalue);
+        setMovieGener(newvalue);
         setPopularMoviesData({
             ...popularMoviesData, page_num: 1
         })
