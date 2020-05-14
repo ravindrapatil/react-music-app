@@ -1,32 +1,50 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchUsers } from '../appRedux';
+import { fetchUsers, fetchCricketPlayers } from '../appRedux';
 
-function History({ fetchUsers, userData }) {
-    debugger;
+function History({ fetchUsers, userData, fetchPlayers, playersData }) {
     useEffect(() => {
         fetchUsers();
+        fetchPlayers();
     }, []);
 
     return (
-        <div>
-            <h2>List of Users</h2>
-            <div>
-                {
-                    userData.loading ?
-                        <div>Loading...</div>
-                        :
-                        userData.error ? <div>{userData.error}</div>
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+            <div style={{ width: '50%', textAlign: 'left' }}>
+                <h2>List of Users</h2>
+                <div>
+                    {
+                        userData.loading ?
+                            <div>Loading...</div>
                             :
-                            <div>
-                                {
-                                    userData.users.map((user, index) => {
-                                        return <p key={index}>{user.name}</p>
-                                    })
-                                }
-                            </div>
-                }
+                            userData.error ? <div>{userData.error}</div>
+                                :
+                                <div>
+                                    {
+                                        userData.users.map((user, index) => {
+                                            return <p key={index}>{user.name}</p>
+                                        })
+                                    }
+                                </div>
+                    }
 
+                </div>
+            </div>
+            <div style={{ width: '50%', textAlign: 'left' }}>
+                <h2>Indian Team</h2>
+                <div>
+                    {
+                        playersData && playersData.loading ? <div>Loading ...</div>
+                            : playersData.error ? <div>playersData.error</div> :
+                                <div>
+                                    {
+                                        playersData.players.map((player) => {
+                                            return <p key={player.pid}>{player.name}</p>
+                                        })
+                                    }
+                                </div>
+                    }
+                </div>
             </div>
         </div>
     )
@@ -34,13 +52,15 @@ function History({ fetchUsers, userData }) {
 
 const mapStateToProps = state => {
     return {
-        userData: state.user
+        userData: state.user,
+        playersData: state.cricketPlayers
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchUsers: () => dispatch(fetchUsers())
+        fetchUsers: () => dispatch(fetchUsers()),
+        fetchPlayers: () => dispatch(fetchCricketPlayers())
     }
 }
 
