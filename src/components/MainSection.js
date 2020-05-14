@@ -18,6 +18,7 @@ import Movies from './movies/Movies';
 import MovieFullView from './movies/MovieFullView';
 import PersonDetails from './movies/PersonDetails';
 import SearchMovies from './movies/SearchMovies';
+import History from './History';
 
 const AntTab = withStyles({
     root: {
@@ -167,9 +168,12 @@ function MainSection({ history, location }) {
                             return <SearchMovies {...props} />
                         }}
                     />
-
-                    {/* <Route path="searchmovies" component={SearchMovies} /> */}
-
+                    <Route
+                        path="/history"
+                        render={props => {
+                            return <History {...props} />
+                        }}
+                    />
                     <Route path="/settings" component={Settings} />
                 </Switch>
                 <Route path="/" render={props => returnMainPlayer(props)} />
