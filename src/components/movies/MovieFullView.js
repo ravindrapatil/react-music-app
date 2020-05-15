@@ -4,7 +4,8 @@ import {
     makeStyles,
     Typography,
     Snackbar,
-    CircularProgress
+    Button,
+    Dialog
 } from '@material-ui/core/';
 import { Helmet } from "react-helmet";
 
@@ -13,6 +14,7 @@ import GenreList from './GenreList';
 import MoviesGallery from './MoviesGallery';
 import CastAndCrewComponent from './CastAndCrew';
 import MovieCard from './MovieCard';
+import BookTicket from './BookTicket';
 import { formatMoney, formatTime, genresList } from '../../utilities/utilities';
 import defaultImg from '../../images/default-movie.jpg';
 
@@ -36,6 +38,7 @@ function MovieFullView(props) {
     const [recommendedMoviesList, setRecommendedMoviesList] = useState();
     const [showHideRecSection, setshowHideRecSection] = useState(true);
     const [loading, setloading] = useState(false);
+    const [dialogopen, setDialogopen] = useState(false);
     let revenue, budget, runtime, moviegenre;
 
     const [snackbarOpen, setSnackbarOpen] = useState({
@@ -102,7 +105,7 @@ function MovieFullView(props) {
     const getRecommendedMovies = async (id) => {
         await themoviedb.getRecommendations(id).then(res => {
             if (res.status >= 200 && res.status < 300) {
-                setRecommendedMoviesList(res); 
+                setRecommendedMoviesList(res);
                 const showHide = res.data.results.length === 0 ? false : true;
                 setshowHideRecSection(showHide);
             } else {
@@ -132,90 +135,106 @@ function MovieFullView(props) {
         setSnackbarOpen({ ...snackbarOpen, open: false });
     };
 
+    const openBookTicketModel = () => {
+        setDialogopen(true)
+    }
+
+    const handleDialogClose = () => {
+        setDialogopen(false)
+    }
+
     return (
         <>
             {
                 // loading ? <div style={{ margin: '30px auto', textAlign: 'center' }}><CircularProgress size={50} /></div>
                 //     :
-                    <>
-                        <Helmet>
-                            {
-                                movie ? <title>{`SIM Music - ${movie.title}`}</title> : <title>{`SIM Music - Movie Details`}</title>
-                            }
-                        </Helmet>
-                        <div style={{ marginTop: '30px' }}>
-                            {
-                                movie && <Grid container spacing={3}>
-                                    <Grid item xs={12} md={3} lg={3} sm={3}>
-                                        <img className={classes.imgStyle}
-                                            src={movie.poster_path ? `https://image.tmdb.org/t/p/w300///${movie.poster_path}` : `${defaultImg}`}
-                                            alt={movie.title}
-                                            title={movie.title} />
-                                    </Grid>
-                                    <Grid item xs={12} md={9} lg={9} sm={9}>
-                                        <div className={classes.content}>
-                                            <Typography variant="caption" gutterBottom>
-                                                Title:
-                        </Typography>
-                                            <Typography variant="h5" gutterBottom>
-                                                {movie.title}
-                                            </Typography>
-                                        </div>
-
-                                        <div className={classes.content}>
-                                            <Typography variant="caption" gutterBottom>
-                                                Overview:
-                        </Typography>
-                                            <Typography variant="body2" gutterBottom>
-                                                {movie.overview}
-                                            </Typography>
-                                        </div>
-
-                                        <div className={classes.content}>
-                                            <Typography variant="caption" gutterBottom>
-                                                Release date:
-                        </Typography>
-                                            <Typography variant="body2" gutterBottom>
-                                                {movie.release_date}
-                                            </Typography>
-                                        </div>
-
-                                        <div className={classes.content}>
-                                            <Typography variant="caption" gutterBottom>
-                                                Budget:
-                        </Typography>
-                                            <Typography variant="body2" gutterBottom>
-                                                $ {budget}
-                                            </Typography>
-                                        </div>
-
-                                        <div className={classes.content}>
-                                            <Typography variant="caption" gutterBottom>
-                                                Revenue:
-                        </Typography>
-                                            <Typography variant="body2" gutterBottom>
-                                                $ {revenue}
-                                            </Typography>
-                                        </div>
-
-                                        <div className={classes.content}>
-                                            <Typography variant="caption" gutterBottom>
-                                                Duration:
-                            </Typography>
-                                            <Typography variant="body2" gutterBottom>
-                                                {runtime}
-                                            </Typography>
-                                        </div>
-
-                                        <div className={classes.content}>
-                                            {moviegenre && <GenreList moviegenre={moviegenre} />}
-                                        </div>
-
-                                    </Grid>
+                <>
+                    <Helmet>
+                        {
+                            movie ? <title>{`SIM Music - ${movie.title}`}</title> : <title>{`SIM Music - Movie Details`}</title>
+                        }
+                    </Helmet>
+                    <div style={{ marginTop: '30px' }}>
+                        {
+                            movie && <Grid container spacing={3}>
+                                <Grid item xs={12} md={3} lg={3} sm={3}>
+                                    <img className={classes.imgStyle}
+                                        src={movie.poster_path ? `https://image.tmdb.org/t/p/w300///${movie.poster_path}` : `${defaultImg}`}
+                                        alt={movie.title}
+                                        title={movie.title} />
                                 </Grid>
-                            }
-                        </div>
-                    </>
+                                <Grid item xs={12} md={9} lg={9} sm={9}>
+                                    <div className={`${classes.content}`}>
+                                        <Typography variant="caption" gutterBottom>
+                                            Title:
+                                        </Typography>
+                                        <Typography variant="h5" gutterBottom>
+                                            {movie.title}
+                                        </Typography>
+                                    </div>
+
+                                    <div className={classes.content}>
+                                        <Typography variant="caption" gutterBottom>
+                                            Overview:
+                                        </Typography>
+                                        <Typography variant="body2" gutterBottom>
+                                            {movie.overview}
+                                        </Typography>
+                                    </div>
+
+                                    <div className={classes.content}>
+                                        <Typography variant="caption" gutterBottom>
+                                            Release date:
+                                        </Typography>
+                                        <Typography variant="body2" gutterBottom>
+                                            {movie.release_date}
+                                        </Typography>
+                                    </div>
+
+                                    <div className={classes.content}>
+                                        <Typography variant="caption" gutterBottom>
+                                            Budget:
+                                        </Typography>
+                                        <Typography variant="body2" gutterBottom>
+                                            $ {budget}
+                                        </Typography>
+                                    </div>
+
+                                    <div className={classes.content}>
+                                        <Typography variant="caption" gutterBottom>
+                                            Revenue:
+                                        </Typography>
+                                        <Typography variant="body2" gutterBottom>
+                                            $ {revenue}
+                                        </Typography>
+                                    </div>
+
+                                    <div className={classes.content}>
+                                        <Typography variant="caption" gutterBottom>
+                                            Duration:
+                                        </Typography>
+                                        <Typography variant="body2" gutterBottom>
+                                            {runtime}
+                                        </Typography>
+                                    </div>
+
+                                    <div className={classes.content}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <div>
+                                                {moviegenre && <GenreList moviegenre={moviegenre} />}
+                                            </div>
+                                            <div>
+                                                <Button variant="contained" color="primary" onClick={openBookTicketModel}>
+                                                    Book Ticket
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Grid>
+                            </Grid>
+                        }
+                    </div>
+                </>
             }
             <div>
                 <MoviesGallery movieImages={movieImages} />
@@ -238,6 +257,14 @@ function MovieFullView(props) {
                 message="Please check your network connection"
                 className="snackbarStyle"
             />
+            <Dialog
+                open={dialogopen}
+                onClose={handleDialogClose}
+                aria-labelledby="book-my-ticket"
+            >
+                <BookTicket movie={movie}
+                    handleDialogClose={handleDialogClose} />
+            </Dialog>
         </>
     )
 }

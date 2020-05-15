@@ -160,3 +160,20 @@
 .snackbarStyle .MuiSnackbarContent-root .MuiSnackbarContent-message {
   width: 100% !important;
 }
+
+.movie-info {
+  position: relative;
+}
+
+.bookModelContainer {
+  width: 500px;
+  height: 50vh;
+}
+
+.button .MuiButton-label {
+  font-size: 12px;
+}
+
+.button, .button.active {
+  font-size: 12px;
+}

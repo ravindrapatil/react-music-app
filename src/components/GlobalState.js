@@ -10,7 +10,8 @@ const initialState = {
     latestMoviesList: [],
     menuOpen: false,
     movieGenerState: 'popular',
-    someError: false
+    someError: false,
+    ticketBooking: []
 }
 
 const reducer = (state, action) => {
@@ -51,10 +52,15 @@ const reducer = (state, action) => {
                 movieGenerState: action.snippet
             }
         case "setSomethingWrong":
-                return {
-                    ...state,
-                    someError: action.snippet
-                }    
+            return {
+                ...state,
+                someError: action.snippet
+            }
+        case "setTicketBooking":
+            return {
+                ...state,
+                ticketBooking: [...state.ticketBooking, action.snippet]
+            }
         default:
             return state;
     }

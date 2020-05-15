@@ -40,6 +40,5 @@ export const genresList = genersforMovie => {
     const filtredGener = matched.filter((v, i) => {
         return v.length === 1
     });
-    console.log(filtredGener);
     return filtredGener;
 }
