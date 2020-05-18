@@ -177,3 +177,13 @@
 .button, .button.active {
   font-size: 12px;
 }
+
+.sticky {
+  position: absolute;
+  top: 0;
+  right: 30px;
+}
+
+.sticky .MuiBadge-badge {
+  background-color: #c307b5 !important;
+}

@@ -231,7 +231,6 @@ function Movies(props) {
                 message="Please check your network connection"
                 className="snackbarStyle"
             />
-
         </div>
     )
 }

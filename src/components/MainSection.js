@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { withRouter, Switch, Route, Link } from "react-router-dom";
-import { Tabs, Tab, withStyles, Container } from '@material-ui/core';
+import { Tabs, Tab, withStyles, Container, Badge } from '@material-ui/core';
 import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 import HomeIcon from '@material-ui/icons/Home';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import HistoryIcon from '@material-ui/icons/History';
 import { Helmet } from "react-helmet";
+import MovieIcon from '@material-ui/icons/Movie';
 
 import { GlobalContext } from "./GlobalState";
 import SearchResult from './SearchResult';
@@ -19,6 +20,7 @@ import MovieFullView from './movies/MovieFullView';
 import PersonDetails from './movies/PersonDetails';
 import SearchMovies from './movies/SearchMovies';
 import History from './History';
+import BookedTickets from '../components/movies/BookedTickets'
 
 const AntTab = withStyles({
     root: {
@@ -58,9 +60,10 @@ const AntTabs = withStyles({
 let previousLocation;
 
 function MainSection({ history, location }) {
-    const [{ currentVideoSnippet, searchResult }] = useContext(GlobalContext);
+    const [{ currentVideoSnippet, searchResult, ticketBooking }] = useContext(GlobalContext);
     const [redirectState, setRedirectState] = useState(null);
     const [tabValue, setTabValue] = useState(0);
+    const noOfMookedTickets = ticketBooking.length;
 
     const continueToHome = () => {
         localStorage.setItem('isThisNew', 'no');
@@ -174,19 +177,32 @@ function MainSection({ history, location }) {
                             return <History {...props} />
                         }}
                     />
+                    <Route
+                        path="/bookedtickets"
+                        render={props => {
+                            return <BookedTickets {...props} />
+                        }}
+                    />
                     <Route path="/settings" component={Settings} />
                 </Switch>
                 <Route path="/" render={props => returnMainPlayer(props)} />
                 <div style={{ height: currentVideoSnippet.id ? "100px" : "0px" }} />
             </Container>
             <div className="stickyFooterLinks">
-                <Container>
+                <Container style={{ position: 'relative' }}>
                     <AntTab value={tabValue} onChange={handleTabChange} variant="fullWidth" indicatorColor="primary" textColor="primary">
                         <AntTabs aria-label="Home" icon={<HomeIcon />} to="/home" label="Home" component={Link} />
                         <AntTabs aria-label="Liked" icon={<QueueMusicIcon />} to="/relatedvideos" label="Related Videos" component={Link} />
                         <AntTabs aria-label="Movies" icon={<GetAppIcon />} to="/movies" label="Movies" component={Link} />
                         <AntTabs aria-label="History" icon={<HistoryIcon />} to="/history" label="History" component={Link} />
                     </AntTab>
+                    <div className="sticky">
+                        <Link to="/bookedtickets" style={{color: '#efff00'}} alt="Booked Ticket" title="Booked Ticket">
+                            <Badge badgeContent={noOfMookedTickets} showZero color="primary">
+                                <MovieIcon />
+                            </Badge>
+                        </Link>
+                    </div>
                 </Container>
             </div>
         </>
