@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core/';
 import { GlobalContext } from "../GlobalState";
 import { Helmet } from "react-helmet";
+import defaultImg from '../../images/default-movie.jpg';
 
 const useStyles = makeStyles({
     tableHead: {
@@ -21,6 +22,9 @@ const useStyles = makeStyles({
     },
     tableContainer: {
         margin: '20px 0 0'
+    },
+    imgStyle: {
+        height: '100px'
     }
 })
 
@@ -42,17 +46,27 @@ function BookedTickets() {
                                     <TableRow>
                                         <TableCell className={classes.tableCell}>Movie</TableCell>
                                         <TableCell className={classes.tableCell} align="left">Day</TableCell>
-                                        <TableCell className={classes.tableCell} align="right">Time</TableCell>
+                                        <TableCell className={classes.tableCell} align="left">Time</TableCell>
+                                        <TableCell className={classes.tableCell} align="right">Seat No/s</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {ticketBooking.map((row, index) => (
                                         <TableRow key={index}>
-                                            <TableCell component="th" scope="row">
-                                                {row.name}
+                                            <TableCell scope="row" style={{ width: '200px', textAlign: 'center' }}>
+                                                <img className={classes.imgStyle}
+                                                    src={row.movie.poster_path ? `https://image.tmdb.org/t/p/w300///${row.movie.poster_path}` : `${defaultImg}`}
+                                                    alt={row.movie.title}
+                                                    title={row.movie.title} />
+                                                <p>
+                                                    {row.movie.title}
+                                                </p>
                                             </TableCell>
-                                            <TableCell align="left">{row.day}</TableCell>
-                                            <TableCell align="right">{row.time}</TableCell>
+                                            <TableCell align="left">{row.dateTime.slice(0, 15)}</TableCell>
+                                            <TableCell align="left">{row.movieShowTime}</TableCell>
+                                            <TableCell align="right">
+                                                {row.seatSelected.map(seat => <span style={{ display: 'inline-block', padding: '0 10px' }} key={seat}>{seat}</span>)}
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

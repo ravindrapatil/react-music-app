@@ -7,6 +7,7 @@ import {
     Button,
     Dialog
 } from '@material-ui/core/';
+import { withRouter } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 
 import themoviedb from '../../apis/themoviedb';
@@ -143,6 +144,12 @@ function MovieFullView(props) {
         setDialogopen(false)
     }
 
+    const gotoTicketBooking = (movie) => {
+        props.history.push(`/ticketBooking`, {
+            movieInfo: movie
+        });
+    }
+
     return (
         <>
             {
@@ -224,7 +231,10 @@ function MovieFullView(props) {
                                                 {moviegenre && <GenreList moviegenre={moviegenre} />}
                                             </div>
                                             <div>
-                                                <Button variant="contained" color="primary" onClick={openBookTicketModel}>
+                                                {/* <Button variant="contained" color="primary" onClick={openBookTicketModel}>
+                                                    Book Ticket
+                                                </Button> */}
+                                                <Button variant="contained" color="primary" onClick={() => gotoTicketBooking(movie)}>
                                                     Book Ticket
                                                 </Button>
                                             </div>
@@ -269,4 +279,4 @@ function MovieFullView(props) {
     )
 }
 
-export default MovieFullView
+export default withRouter(MovieFullView)

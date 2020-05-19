@@ -187,3 +187,50 @@
 .sticky .MuiBadge-badge {
   background-color: #c307b5 !important;
 }
+
+/* Ticket seat  */
+.grid {
+  text-align: center;
+}
+
+.grid td {
+  width: 50px;
+  line-height: 50px;
+  border: 2px solid orange;
+  text-align: center;
+  margin: 20px;
+  display: inline-block;
+}
+
+.grid td:hover {
+  opacity: .7;
+  cursor: pointer;
+}
+
+.reserved {
+  background: orange;
+  color: #fff;
+  display: inline-block;
+}
+
+.selected {
+  background: red;
+  color: #fff;
+  display: inline-block;
+}
+
+/* .reserved::after {
+  content: 'RESERVED'
+}
+
+.selected::after {
+  content: 'SELECTED'
+}
+
+.available::after {
+  content: 'AVAILABLE'
+} */
+
+.available {
+  color: #333;
+}

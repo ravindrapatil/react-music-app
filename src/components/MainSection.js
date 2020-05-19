@@ -15,6 +15,7 @@ import HomePage from './HomePage';
 import MainPlayer from '../components/player/MainPlayer';
 import RelatedVideos from './RelatedVideos';
 import Settings from './Settings';
+import BookTicket from './movies/BookTicket';
 import Movies from './movies/Movies';
 import MovieFullView from './movies/MovieFullView';
 import PersonDetails from './movies/PersonDetails';
@@ -113,8 +114,6 @@ function MainSection({ history, location }) {
         }
     }
 
-    console.log(" Location history - " + JSON.stringify(previousLocation));
-
     return (
         <>
             <Helmet>
@@ -184,6 +183,9 @@ function MainSection({ history, location }) {
                         }}
                     />
                     <Route path="/settings" component={Settings} />
+                    <Route path="/ticketBooking" render={props => {
+                        return <BookTicket {...props} />
+                    }} />
                 </Switch>
                 <Route path="/" render={props => returnMainPlayer(props)} />
                 <div style={{ height: currentVideoSnippet.id ? "100px" : "0px" }} />
@@ -197,7 +199,7 @@ function MainSection({ history, location }) {
                         <AntTabs aria-label="History" icon={<HistoryIcon />} to="/history" label="History" component={Link} />
                     </AntTab>
                     <div className="sticky">
-                        <Link to="/bookedtickets" style={{color: '#efff00'}} alt="Booked Ticket" title="Booked Ticket">
+                        <Link to="/bookedtickets" style={{ color: '#efff00' }} alt="Booked Ticket" title="Booked Ticket">
                             <Badge badgeContent={noOfMookedTickets} showZero color="primary">
                                 <MovieIcon />
                             </Badge>
