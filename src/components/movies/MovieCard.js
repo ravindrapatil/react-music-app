@@ -8,7 +8,8 @@ import {
     makeStyles,
     Grid,
     Badge,
-    Slider
+    Slider,
+    Button
 } from '@material-ui/core/';
 import { withRouter } from 'react-router-dom';
 import defaultImg from '../../images/default-movie.jpg';
@@ -155,6 +156,16 @@ function MovieCard(props) {
         }
     }
 
+    const resetFilter = () => {
+        setstate({
+            ...state,
+            voteCount: max,
+            popularCount: popular,
+            voteAverage: rating,
+            movies: moviesList
+        })
+    }
+
     return (
         <>
             <div style={{ margin: '20px 0' }}>
@@ -162,10 +173,10 @@ function MovieCard(props) {
                     Apply Filter
                 </Typography>
                 <Grid container>
-                    <Grid item lg={4} xs={12} sm={4} md={4}>
+                    <Grid item lg={3} xs={12} sm={3} md={3}>
                         <div style={{ width: '80%' }}>
                             <Typography variant="caption" display="block" className="roomPriceLabel">
-                                Audiance Voting - <span className={classes.filterCount}>{voteCount}</span>
+                                Audiance Voting : <span className={classes.filterCount}>{voteCount}</span>
                             </Typography>
                             <Slider
                                 value={voteCount}
@@ -174,10 +185,10 @@ function MovieCard(props) {
                                 aria-labelledby="continuous-slider" />
                         </div>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={4} md={4}>
+                    <Grid item lg={3} xs={12} sm={3} md={3}>
                         <div style={{ width: '80%' }}>
                             <Typography variant="caption" display="block" className="roomPriceLabel">
-                                Popularity - <span className={classes.filterCount}>{popularCount}</span>
+                                Popularity : <span className={classes.filterCount}>{popularCount}</span>
                             </Typography>
                             <Slider
                                 value={popularCount}
@@ -186,10 +197,10 @@ function MovieCard(props) {
                                 aria-labelledby="continuous-slider" />
                         </div>
                     </Grid>
-                    <Grid item lg={4} xs={12} sm={4} md={4}>
+                    <Grid item lg={3} xs={12} sm={3} md={3}>
                         <div style={{ width: '80%' }}>
                             <Typography variant="caption" display="block" className="roomPriceLabel">
-                                Critic Rating - <span className={classes.filterCount}>{voteAverage}</span>
+                                Critic Rating : <span className={classes.filterCount}>{voteAverage}</span>
                             </Typography>
                             <Slider
                                 value={voteAverage}
@@ -197,6 +208,11 @@ function MovieCard(props) {
                                 onChange={handleRatingChange}
                                 aria-labelledby="continuous-slider" />
                         </div>
+                    </Grid>
+                    <Grid item lg={3} xs={12} sm={3} md={3} style={{ textAlign: 'center', marginTop: '10px' }}>
+                        <Button onClick={resetFilter} variant="contained" size="small" color="primary" style={{ fontSize: '0.751rem' }}>
+                            Reset
+                        </Button>
                     </Grid>
                 </Grid>
             </div>
