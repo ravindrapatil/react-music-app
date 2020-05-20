@@ -62,7 +62,7 @@ function SearchMovies(props) {
         await themoviedb.getSearchMovies(searchQuery, page_num).then(res => {
             if (res.status >= 200 && res.status < 300) {
                 setmoviesState({
-                    ...moviesState, movies: res, total_pages: res.data.total_pages
+                    ...moviesState, movies: res.data.results, total_pages: res.data.total_pages
                 });
                 setloading(false);
             } else {
@@ -91,7 +91,7 @@ function SearchMovies(props) {
     };
 
     const previousPage = () => {
-        if (movies && movies.data.results.length && page_num !== 1) {
+        if (movies && movies.length && page_num !== 1) {
             setmoviesState({
                 ...moviesState,
                 page_num: moviesState.page_num -= 1

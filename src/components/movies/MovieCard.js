@@ -50,14 +50,15 @@ let moviegener = [
 ]
 
 function MovieCard(props) {
+    const moviesList = props.movies;
     const classes = useStyles();
     const [movies, setmovies] = useState();
 
     useEffect(() => {
-        if (props.movies && props.movies && props.movies.data && props.movies.data.results && props.movies.data.results.length) {
-            setmovies(props.movies.data.results);
-        } else if (props.movies && props.movies && props.movies.data && props.movies.data.crew && props.movies.data.crew.length) {
-            setmovies(props.movies.data.crew);
+        if (moviesList && moviesList.length) {
+            setmovies(moviesList);
+        } else if (moviesList && moviesList.data && moviesList.data.crew && moviesList.data.crew.length) {
+            setmovies(moviesList.data.crew);
         }
     }, [props])
 

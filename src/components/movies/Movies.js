@@ -58,7 +58,7 @@ function Movies(props) {
             if (res.status >= 200 && res.status < 300) {
                 setPopularMoviesData({
                     ...popularMoviesData,
-                    movies: res, total_pages: res.data.total_pages
+                    movies: res.data.results, total_pages: res.data.total_pages
                 });
                 setloading(false);
             } else {
@@ -89,7 +89,7 @@ function Movies(props) {
     };
 
     const previousPage = () => {
-        if (movies && movies.data.results.length && page_num !== 1) {
+        if (movies && movies.length && page_num !== 1) {
             setPopularMoviesData({
                 ...popularMoviesData,
                 page_num: popularMoviesData.page_num -= 1

@@ -106,7 +106,7 @@ function MovieFullView(props) {
     const getRecommendedMovies = async (id) => {
         await themoviedb.getRecommendations(id).then(res => {
             if (res.status >= 200 && res.status < 300) {
-                setRecommendedMoviesList(res);
+                setRecommendedMoviesList(res.data.results);
                 const showHide = res.data.results.length === 0 ? false : true;
                 setshowHideRecSection(showHide);
             } else {
