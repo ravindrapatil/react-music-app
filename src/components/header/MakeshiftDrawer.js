@@ -46,15 +46,6 @@ function MakeshiftDrawer({ open }) {
                         <ListItemText primary="Settings" />
                     </ListItem>
                 </List>
-                <List component="nav"
-                    onClick={() => handleListItemClick(false)}>
-                    <ListItem button component={Link} to="/hallform">
-                        <ListItemIcon>
-                            <DraftsIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Book My Show" />
-                    </ListItem>
-                </List>
                 {/* <Divider /> */}
             </div>
         </Slide>

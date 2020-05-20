@@ -9,6 +9,7 @@ import {
     TableContainer,
     makeStyles
 } from '@material-ui/core/';
+import { Link } from "react-router-dom";
 import { GlobalContext } from "../GlobalState";
 import { Helmet } from "react-helmet";
 import defaultImg from '../../images/default-movie.jpg';
@@ -25,6 +26,13 @@ const useStyles = makeStyles({
     },
     imgStyle: {
         height: '100px'
+    },
+    movieTitle: {
+        margin: 0
+    },
+    link: {
+        color: '#0072ff !important',
+        textDecoration: 'none'
     }
 })
 
@@ -58,8 +66,10 @@ function BookedTickets() {
                                                     src={row.movie.poster_path ? `https://image.tmdb.org/t/p/w300///${row.movie.poster_path}` : `${defaultImg}`}
                                                     alt={row.movie.title}
                                                     title={row.movie.title} />
-                                                <p>
-                                                    {row.movie.title}
+                                                <p className={classes.movieTitle}>
+                                                    <Link className={classes.link} to={`/movie/${row.movie.id}`} style={{ color: '#efff00' }} alt="Booked Ticket" title="Booked Ticket">
+                                                        {row.movie.title}
+                                                    </Link>
                                                 </p>
                                             </TableCell>
                                             <TableCell align="left">{row.dateTime.slice(0, 15)}</TableCell>
