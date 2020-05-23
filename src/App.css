@@ -148,7 +148,7 @@
   text-align: right !important;
 }
 
-.moviesSearchPage .MuiInputBase-fullWidth { 
+.moviesSearchPage .MuiInputBase-fullWidth {
   width: auto !important;
 }
 
@@ -174,7 +174,8 @@
   font-size: 12px;
 }
 
-.button, .button.active {
+.button,
+.button.active {
   font-size: 12px;
 }
 
@@ -203,7 +204,7 @@
 }
 
 .grid td:hover {
-  opacity: .7;
+  opacity: 0.7;
   cursor: pointer;
 }
 
@@ -233,4 +234,35 @@
 
 .available {
   color: #333;
+}
+
+.stockSearch {
+  position: relative;
+  padding-top: 10px;
+}
+
+.stockSearch .searchResultHolder {
+  position: absolute;
+  width: 100%;
+  /* height: 76vh; */
+  overflow-x: scroll;
+  z-index: 8;
+  background: #fff;
+  height: calc(100vh - 158px);
+}
+
+.nys {
+  background: #dfe3f7;
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.pse {
+  background: #f7e8bf;
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.popoverBtns svg {
+  width: 0.7em;
 }

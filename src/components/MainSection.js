@@ -22,6 +22,7 @@ import PersonDetails from './movies/PersonDetails';
 import SearchMovies from './movies/SearchMovies';
 import History from './History';
 import BookedTickets from '../components/movies/BookedTickets'
+import Dashboard from '../components/miniStocks/Dashboard'
 
 const AntTab = withStyles({
     root: {
@@ -186,6 +187,9 @@ function MainSection({ history, location }) {
                     <Route path="/ticketBooking" render={props => {
                         return <BookTicket {...props} />
                     }} />
+                    <Route path="/ministocks" render={props => {
+                        return <Dashboard {...props} />
+                    }} />
                 </Switch>
                 <Route path="/" render={props => returnMainPlayer(props)} />
                 <div style={{ height: currentVideoSnippet.id ? "100px" : "0px" }} />
@@ -196,7 +200,7 @@ function MainSection({ history, location }) {
                         <AntTabs aria-label="Home" icon={<HomeIcon />} to="/home" label="Home" component={Link} />
                         <AntTabs aria-label="Liked" icon={<QueueMusicIcon />} to="/relatedvideos" label="Related Videos" component={Link} />
                         <AntTabs aria-label="Movies" icon={<GetAppIcon />} to="/movies" label="Movies" component={Link} />
-                        <AntTabs aria-label="History" icon={<HistoryIcon />} to="/history" label="History" component={Link} />
+                        <AntTabs aria-label="Mini Stocks" icon={<HistoryIcon />} to="/ministocks" label="Mini Stocks" component={Link} />
                     </AntTab>
                     <div className="sticky">
                         <Link to="/bookedtickets" style={{ color: '#efff00' }} alt="Booked Ticket" title="Booked Ticket">
