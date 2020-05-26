@@ -2,10 +2,16 @@ import {
     QUERY_TERM, START_FETCH, FETCH_SUCCESS, FETCH_ERROR,
     STOCK_ADDED, STOCK_REMOVED, START_STOCKNEWS_FETCH,
     FETCH_STOCKNEWS_SUCCESS,
-    FETCH_STOCKNEWS_ERROR,
+    FETCH_STOCKNEWS_ERROR, FETCH_COMPANY_INFO_SUCCESS,
+    FETCH_HISTORIC_STOCK_SUCCESS
 } from './stocksTypes'
 
 const favStockList = [
+    {
+        "value": "INFY",
+        "name": "Infosys Ltd.",
+        "exchange": "NSE"
+    },
     {
         value: 'ADANIENT',
         name: 'Adani Enterprises Ltd.',
@@ -17,14 +23,14 @@ const favStockList = [
         exchange: 'NSE'
     },
     {
-        value: 'ADI',
-        name: 'Adi Finechem Ltd.',
-        exchange: 'NSE'
+        "value": "YESBANK",
+        "name": "Yes Bank Ltd.",
+        "exchange": "NSE"
     },
     {
-        value: 'ADFFOODS',
-        name: 'ADF Foods Ltd.',
-        exchange: 'NSE'
+        "value": "IRCTC",
+        "name": "Indian Railway Catering & Tourism Corporation Ltd.",
+        "exchange": "NSE"
     }
 ]
 
@@ -37,7 +43,9 @@ const initialState = {
     modalMessage: {},
     favStockList: favStockList,
     selectedStock: {},
-    selectedStockNews: {}
+    selectedStockNews: {},
+    selectedStockCompany: {},
+    historicData: {}
 }
 
 const stocksReducer = (state = initialState, action) => {
@@ -75,7 +83,6 @@ const stocksReducer = (state = initialState, action) => {
                 error: action.payload.error,
                 isFetching: action.payload.isFetching
             }
-
         case START_STOCKNEWS_FETCH:
             return {
                 ...state,
@@ -93,12 +100,19 @@ const stocksReducer = (state = initialState, action) => {
                 error: action.payload.error,
                 isFetching: action.payload.isFetching
             }
-        // case FETCH_STOCKINEWS_SUCCESS:
-        //     return {
-        //         ...state,
-        //         selectedStockNews: action.payload.selectedStockNews,
-        //         isFetching: action.payload.isFetching
-        //     }
+        case FETCH_COMPANY_INFO_SUCCESS:
+            return {
+                ...state,
+                selectedStockCompany: action.payload.selectedStockCompany,
+                isFetching: action.payload.isFetching
+            }
+        case FETCH_HISTORIC_STOCK_SUCCESS:
+            return {
+                ...state,
+                historicData: action.payload.historicData,
+                isFetching: action.payload.isFetching
+            }
+
         default:
             return state;
     }

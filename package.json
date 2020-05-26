@@ -10,6 +10,8 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "axios-jsonp": "^1.0.4",
+    "highcharts": "^8.1.0",
+    "highcharts-react-official": "^3.0.0",
     "jsonp": "^0.2.1",
     "query-string": "^6.12.1",
     "react": "^16.13.1",

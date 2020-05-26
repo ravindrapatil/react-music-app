@@ -7,11 +7,11 @@ import {
     Tooltip,
     Button
 } from '@material-ui/core/';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+// import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import FormatAlignCenterIcon from '@material-ui/icons/FormatAlignCenter';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import { stockAdded, removeStockFav, fetchStockNews } from '../../appRedux';
+import { stockAdded, removeStockFav, fetchStockNews, fetchStockCompanyInfo, fetchHistoricStockData } from '../../appRedux';
 
 const useStyles = makeStyles(() => ({
     listHolder: {
@@ -63,12 +63,17 @@ const useStyles = makeStyles(() => ({
 }))
 
 function PopoverContent(props) {
-    const { item, showHideBtns, getSelectedStockNews, removeFromFavourite, addToFavourite } = props;
+    const classes = useStyles();
+    const { item, 
+        showHideBtns, 
+        getSelectedStockNews, 
+        removeFromFavourite, 
+        addToFavourite, 
+        companyInfo, 
+        historicStockData } = props;
     const [state, setstate] = useState({
         listHover: false
     })
-    const classes = useStyles();
-
     const { listHover } = state;
 
     const onMouseOver = (e) => {
@@ -81,6 +86,8 @@ function PopoverContent(props) {
 
     const getCalls = (item) => {
         getSelectedStockNews(item);
+        companyInfo(item);
+        historicStockData(item);
     }
 
     return (
@@ -94,7 +101,7 @@ function PopoverContent(props) {
                         {item.value}
                     </Typography>
                     <Typography variant='body1' style={{ fontSize: '0.7rem' }}>
-                        <span title={item.name}>{item.name.slice(0, 25)}...</span>
+                        <span title={item.name}>{item.name.slice(0, 25)}...</span> &nbsp;
                         <span className={item.exchange.toLowerCase() === 'nys' ? 'nys' : 'pse'}>{item.exchange}</span>
                     </Typography>
                     {
@@ -107,7 +114,7 @@ function PopoverContent(props) {
                                     </Button>
                                 </Tooltip> */}
                                 <Tooltip title="Market Depth">
-                                    <Button size="small" className={`${classes.smallBtn} popoverBtns`} variant="contained" 
+                                    <Button size="small" className={`${classes.smallBtn} popoverBtns`} variant="contained"
                                         color="secondary"
                                         onClick={() => getCalls(item)}>
                                         <FormatAlignCenterIcon />
@@ -146,7 +153,9 @@ const mapDispatchToProps = dispatch => {
     return {
         getSelectedStockNews: (item) => dispatch(fetchStockNews(item)),
         removeFromFavourite: (item) => dispatch(removeStockFav(item)),
-        addToFavourite: (item) => dispatch(stockAdded(item))
+        addToFavourite: (item) => dispatch(stockAdded(item)),
+        companyInfo: (item) => dispatch(fetchStockCompanyInfo(item)),
+        historicStockData: (item) => dispatch(fetchHistoricStockData(item))
     }
 }
 

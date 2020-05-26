@@ -1,13 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import {
     Grid
 } from '@material-ui/core/';
-import { withRouter, Switch, Route, Link } from "react-router-dom";
 
 import StockFetcher from './StockFetcher';
 import StockInfo from './StockInfo';
-import News from './News';
+import StockDetails from './StockDetails';
 
 function Dashboard({news}) {
     return (
@@ -17,8 +15,9 @@ function Dashboard({news}) {
                     <StockFetcher />
                 </Grid>
                 <Grid item xs={12} sm={9} md={9} lg={9}>
-                    <StockInfo />
-                    <News />
+                    {/* <StockInfo /> */}
+                    {/* <News /> */}
+                    <StockDetails />
                 </Grid>
             </Grid>
         </div>

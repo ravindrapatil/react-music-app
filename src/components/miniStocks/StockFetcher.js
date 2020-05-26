@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { connect } from 'react-redux';
 import { fetchStocks, querying } from '../../appRedux';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDebounce } from 'use-debounce';
@@ -9,8 +10,9 @@ import {
 import SearchIcon from '@material-ui/icons/Search';
 import PopoverContent from './PopoverContent';
 import useOutsideClick from "../../components/useOutsideClick";
+import { fetchStockNews, fetchStockCompanyInfo, fetchHistoricStockData } from '../../appRedux';
 
-function StockFetcher() {
+function StockFetcher({ getSelectedStockNews, companyInfo, historicData }) {
     const ref = useRef();
     const dispatch = useDispatch();
     const stocks = useSelector(state => state.stocks);
@@ -25,6 +27,18 @@ function StockFetcher() {
     const [debouncedText] = useDebounce(query, 1000);
 
     const [show, showSetSate] = useState(false);
+
+    useEffect(() => {
+        console.log('yes ----- ');
+        const initialStock = {
+            "value": "INFY",
+            "name": "Infosys Ltd.",
+            "exchange": "NSE"
+        }
+        getSelectedStockNews(initialStock);
+        companyInfo(initialStock);
+        historicData(initialStock);
+    }, [])
 
     useOutsideClick(ref, () => {
         if (show) {
@@ -55,12 +69,12 @@ function StockFetcher() {
 
     return (
         <div className="stockSearch">
-            <div style={{ display: 'flex', justifyContent: 'left' }}>
-                <div style={{ marginTop: '5px' }}>
-                    <SearchIcon />
+            <div style={{ display: 'flex', justifyContent: 'left', border: '1px solid #bbbcc1', borderRadius: '4px' }}>
+                <div style={{ margin: '5px 0 0 5px' }}>
+                    <SearchIcon style={{color: '#3f51b5'}} />
                 </div>
                 <InputBase style={{ width: '100%', fontSize: '13px' }}
-                    placeholder="Search by symbol. eg: AAPL, FB, ..."
+                    placeholder="Search by symbol"
                     value={query}
                     name="query"
                     id="search-input"
@@ -98,4 +112,12 @@ function StockFetcher() {
     )
 }
 
-export default StockFetcher
+const mapDispatchToProps = dispatch => {
+    return {
+        getSelectedStockNews: (item) => dispatch(fetchStockNews(item)),
+        companyInfo: (item) => dispatch(fetchStockCompanyInfo(item)),
+        historicData: (item) => dispatch(fetchHistoricStockData(item))
+    }
+}
+
+export default connect(undefined, mapDispatchToProps)(StockFetcher)

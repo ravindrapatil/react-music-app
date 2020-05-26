@@ -258,11 +258,20 @@
 }
 
 .pse {
-  background: #f7e8bf;
+  background: #dee3fd;
   padding: 3px;
   border-radius: 3px;
 }
 
 .popoverBtns svg {
   width: 0.7em;
+}
+
+.loading {
+  text-align: center;
+  margin: 60px 0 10px;
+}
+
+.highchart {
+  background: url(https://www.highcharts.com/samples/graphics/sand.png);
 }
