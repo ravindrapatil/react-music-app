@@ -92,7 +92,7 @@ export const fetchHistoricDataSuccess = (data) => {
 export const fetchStocks = (query) => {
     const url = `https://api.stockdio.com/freedata/financial/info/v1/getsymbols?app-key=4662E30B3D4949FEA48CD62D0EDEBADB&query=${query}&exchange=NSE&includecolumnnames=false`;
     return (dispatch) => {
-        dispatch(startFetch(query));
+        // dispatch(startFetch(query));
         axios.get(url)
             .then(res => {
                 dispatch(fetchSuccess(res.data.data.Symbols))
