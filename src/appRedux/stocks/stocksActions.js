@@ -10,7 +10,8 @@ import {
     FETCH_STOCKNEWS_SUCCESS,
     FETCH_STOCKNEWS_ERROR,
     FETCH_COMPANY_INFO_SUCCESS,
-    FETCH_HISTORIC_STOCK_SUCCESS
+    FETCH_HISTORIC_STOCK_SUCCESS,
+    START_SEARCH_STOCKS_FETCH
 } from './stocksTypes'
 
 export const querying = () => {
@@ -43,7 +44,7 @@ export const startFetch = (queryTerm) => {
 export const fetchSuccess = (data) => {
     return {
         type: FETCH_SUCCESS,
-        payload: { data, isFetching: false }
+        payload: { data, isFetching: false, isSearchFetching: false }
     }
 }
 
@@ -89,10 +90,17 @@ export const fetchHistoricDataSuccess = (data) => {
     }
 }
 
+export const startSearchFetching = () => {
+    return {
+        type: START_SEARCH_STOCKS_FETCH,
+        payload: { isSearchFetching: true }
+    }
+}
+
 export const fetchStocks = (query) => {
     const url = `https://api.stockdio.com/freedata/financial/info/v1/getsymbols?app-key=4662E30B3D4949FEA48CD62D0EDEBADB&query=${query}&exchange=NSE&includecolumnnames=false`;
     return (dispatch) => {
-        // dispatch(startFetch(query));
+        dispatch(startSearchFetching(query));
         axios.get(url)
             .then(res => {
                 dispatch(fetchSuccess(res.data.data.Symbols))

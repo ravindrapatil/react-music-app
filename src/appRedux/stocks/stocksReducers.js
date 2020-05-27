@@ -3,7 +3,8 @@ import {
     STOCK_ADDED, STOCK_REMOVED, START_STOCKNEWS_FETCH,
     FETCH_STOCKNEWS_SUCCESS,
     FETCH_STOCKNEWS_ERROR, FETCH_COMPANY_INFO_SUCCESS,
-    FETCH_HISTORIC_STOCK_SUCCESS
+    FETCH_HISTORIC_STOCK_SUCCESS,
+    START_SEARCH_STOCKS_FETCH
 } from './stocksTypes'
 
 const favStockList = [
@@ -45,7 +46,8 @@ const initialState = {
     selectedStock: {},
     selectedStockNews: {},
     selectedStockCompany: {},
-    historicData: {}
+    historicData: {},
+    isSearchFetching: false
 }
 
 const stocksReducer = (state = initialState, action) => {
@@ -75,7 +77,8 @@ const stocksReducer = (state = initialState, action) => {
             return {
                 ...state,
                 data: action.payload.data,
-                isFetching: action.payload.isFetching
+                isFetching: action.payload.isFetching,
+                isSearchFetching: action.payload.isSearchFetching
             }
         case FETCH_ERROR:
             return {
@@ -112,7 +115,11 @@ const stocksReducer = (state = initialState, action) => {
                 historicData: action.payload.historicData,
                 isFetching: action.payload.isFetching
             }
-
+        case START_SEARCH_STOCKS_FETCH:
+            return {
+                ...state,
+                isSearchFetching: action.payload.isSearchFetching
+            }
         default:
             return state;
     }
