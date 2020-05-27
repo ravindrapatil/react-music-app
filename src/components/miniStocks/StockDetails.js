@@ -11,6 +11,7 @@ import StockNews from './StockNews';
 import TabPanel from './TabPanel';
 import CompanyInfo from './CompanyInfo';
 import StockChart from './StockChart';
+import CurrentPrice from './CurrentPrice';
 
 function StockDetails({ news, loading, companyInfo }) {
     const newsList = news && news.news && news.news.values && news.news.values.map(news => {
@@ -55,28 +56,28 @@ function StockDetails({ news, loading, companyInfo }) {
                                 textColor="primary"
                                 variant="scrollable"
                                 scrollButtons="auto">
+                                <Tab label="Current Price" style={{ color: '#fff' }} />
                                 <Tab label="News" style={{ color: '#fff' }} />
                                 <Tab label="Company" style={{ color: '#fff' }} />
-                                <Tab label="Item Three" style={{ color: '#fff' }} />
                             </Tabs>
                         </AppBar>
                         <TabPanel value={tabValue} index={0}>
+                            <CurrentPrice />
+                        </TabPanel>
+                        <TabPanel value={tabValue} index={1}>
                             {
                                 newsList && newsList.length ?
                                     <StockNews newsList={newsList} />
                                     : <div>No News available</div>
                             }
                         </TabPanel>
-                        <TabPanel value={tabValue} index={1}>
+                        <TabPanel value={tabValue} index={2}>
                             {
                                 companyInfo && Object.keys(companyInfo).length ?
                                     <CompanyInfo companyInfo={companyInfo} />
                                     : <div>No data found</div>
                             }
                         </TabPanel>
-                        <TabPanel value={tabValue} index={2}>
-                            Item Three
-                    </TabPanel>
                     </>
             }
         </div>

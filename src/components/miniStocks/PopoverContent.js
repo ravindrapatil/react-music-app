@@ -11,7 +11,7 @@ import {
 import FormatAlignCenterIcon from '@material-ui/icons/FormatAlignCenter';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import { stockAdded, removeStockFav, fetchStockNews, fetchStockCompanyInfo, fetchHistoricStockData } from '../../appRedux';
+import { stockAdded, removeStockFav, fetchStockNews, fetchStockCompanyInfo, fetchHistoricStockData, getCurrentStockPrice } from '../../appRedux';
 
 const useStyles = makeStyles(() => ({
     listHolder: {
@@ -70,7 +70,8 @@ function PopoverContent(props) {
         removeFromFavourite, 
         addToFavourite, 
         companyInfo, 
-        historicStockData } = props;
+        historicStockData,
+        getcurrentPrice } = props;
     const [state, setstate] = useState({
         listHover: false
     })
@@ -88,6 +89,7 @@ function PopoverContent(props) {
         getSelectedStockNews(item);
         companyInfo(item);
         historicStockData(item);
+        getcurrentPrice(item);
     }
 
     return (
@@ -155,7 +157,8 @@ const mapDispatchToProps = dispatch => {
         removeFromFavourite: (item) => dispatch(removeStockFav(item)),
         addToFavourite: (item) => dispatch(stockAdded(item)),
         companyInfo: (item) => dispatch(fetchStockCompanyInfo(item)),
-        historicStockData: (item) => dispatch(fetchHistoricStockData(item))
+        historicStockData: (item) => dispatch(fetchHistoricStockData(item)),
+        getcurrentPrice: (item) => dispatch(getCurrentStockPrice(item))
     }
 }
 

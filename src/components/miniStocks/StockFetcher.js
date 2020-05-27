@@ -11,9 +11,9 @@ import {
 import SearchIcon from '@material-ui/icons/Search';
 import PopoverContent from './PopoverContent';
 import useOutsideClick from "../../components/useOutsideClick";
-import { fetchStockNews, fetchStockCompanyInfo, fetchHistoricStockData } from '../../appRedux';
+import { fetchStockNews, fetchStockCompanyInfo, fetchHistoricStockData, getCurrentStockPrice } from '../../appRedux';
 
-function StockFetcher({ getSelectedStockNews, companyInfo, historicData, isSearchFetching }) {
+function StockFetcher({ getSelectedStockNews, companyInfo, historicData, isSearchFetching, getcurrentPrice }) {
     const ref = useRef();
     const dispatch = useDispatch();
     const stocks = useSelector(state => state.stocks);
@@ -39,6 +39,7 @@ function StockFetcher({ getSelectedStockNews, companyInfo, historicData, isSearc
         getSelectedStockNews(initialStock);
         companyInfo(initialStock);
         historicData(initialStock);
+        getcurrentPrice(initialStock);
     }, [])
 
     useOutsideClick(ref, () => {
@@ -125,7 +126,8 @@ const mapDispatchToProps = dispatch => {
     return {
         getSelectedStockNews: (item) => dispatch(fetchStockNews(item)),
         companyInfo: (item) => dispatch(fetchStockCompanyInfo(item)),
-        historicData: (item) => dispatch(fetchHistoricStockData(item))
+        historicData: (item) => dispatch(fetchHistoricStockData(item)),
+        getcurrentPrice: (item) => dispatch(getCurrentStockPrice(item))
     }
 }
 

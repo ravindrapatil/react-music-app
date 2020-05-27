@@ -11,7 +11,8 @@ import {
     FETCH_STOCKNEWS_ERROR,
     FETCH_COMPANY_INFO_SUCCESS,
     FETCH_HISTORIC_STOCK_SUCCESS,
-    START_SEARCH_STOCKS_FETCH
+    START_SEARCH_STOCKS_FETCH,
+    FETCH_CURRENT_PRICE_SUCCESS
 } from './stocksTypes'
 
 export const querying = () => {
@@ -97,6 +98,13 @@ export const startSearchFetching = () => {
     }
 }
 
+export const fetchCurrentPrice = (data) => {
+    return {
+        type: FETCH_CURRENT_PRICE_SUCCESS,
+        payload: { currentPrice: data }
+    }
+}
+
 export const fetchStocks = (query) => {
     const url = `https://api.stockdio.com/freedata/financial/info/v1/getsymbols?app-key=4662E30B3D4949FEA48CD62D0EDEBADB&query=${query}&exchange=NSE&includecolumnnames=false`;
     return (dispatch) => {
@@ -141,11 +149,26 @@ export const fetchStockCompanyInfo = (item) => {
 
 export const fetchHistoricStockData = (item) => {
     return (dispatch) => {
-        const url = `https://api.stockdio.com/data/financial/prices/v1/GetHistoricalPrices?app-key=4662E30B3D4949FEA48CD62D0EDEBADB&stockExchange=NSE&symbol=${item.value}&from=2017-5-24&to=2020-5-24`
+        let date = new Date();
+        let today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+        const url = `https://api.stockdio.com/data/financial/prices/v1/GetHistoricalPrices?app-key=4662E30B3D4949FEA48CD62D0EDEBADB&stockExchange=NSE&symbol=${item.value}&from=2017-5-24&to=${today}`;
         dispatch(startFetchStockNews());
         axios.get(url)
             .then(res => {
                 dispatch(fetchHistoricDataSuccess(res.data.data))
+            })
+            .catch(error => {
+                dispatch(fetchError(error));
+            })
+    }
+}
+
+export const getCurrentStockPrice = (item) => {
+    return (dispatch) => {
+        const url = `https://api.stockdio.com/data/financial/prices/v1/getlatestprice?app-key=4662E30B3D4949FEA48CD62D0EDEBADB&stockExchange=NSE&symbol=${item.value}`;
+        axios.get(url)
+            .then(res => {
+                dispatch(fetchCurrentPrice(res.data))
             })
             .catch(error => {
                 dispatch(fetchError(error));
