@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Helmet } from "react-helmet";
 import {
     CircularProgress,
     AppBar,
@@ -44,6 +45,9 @@ function StockDetails({ news, loading, companyInfo }) {
                     :
                     companyInfo && Object.keys(companyInfo).length &&
                     <>
+                        <Helmet>
+                            <title>{companyInfo.symbol} - {companyInfo.company}</title>
+                        </Helmet>
                         <Typography variant="h5" gutterBottom style={{ marginBottom: '20px' }}>
                             {companyInfo.symbol} - {companyInfo.company}
                         </Typography>

@@ -4,7 +4,6 @@ import {
 } from '@material-ui/core/';
 
 import StockFetcher from './StockFetcher';
-import StockInfo from './StockInfo';
 import StockDetails from './StockDetails';
 
 function Dashboard({news}) {
@@ -15,8 +14,6 @@ function Dashboard({news}) {
                     <StockFetcher />
                 </Grid>
                 <Grid item xs={12} sm={9} md={9} lg={9}>
-                    {/* <StockInfo /> */}
-                    {/* <News /> */}
                     <StockDetails />
                 </Grid>
             </Grid>

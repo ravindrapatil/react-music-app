@@ -1,12 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { withRouter, Switch, Route, Link } from "react-router-dom";
-import { Tabs, Tab, withStyles, Container, Badge } from '@material-ui/core';
-import QueueMusicIcon from '@material-ui/icons/QueueMusic';
-import HomeIcon from '@material-ui/icons/Home';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import HistoryIcon from '@material-ui/icons/History';
+import { withRouter, Switch, Route } from "react-router-dom";
+import { Container } from '@material-ui/core';
 import { Helmet } from "react-helmet";
-import MovieIcon from '@material-ui/icons/Movie';
 
 import { GlobalContext } from "./GlobalState";
 import SearchResult from './SearchResult';
@@ -21,59 +16,20 @@ import MovieFullView from './movies/MovieFullView';
 import PersonDetails from './movies/PersonDetails';
 import SearchMovies from './movies/SearchMovies';
 import History from './History';
-import BookedTickets from '../components/movies/BookedTickets'
-import Dashboard from '../components/miniStocks/Dashboard'
-
-const AntTab = withStyles({
-    root: {
-        background: "#3f51b5",
-        // position: "fixed",
-        bottom: 0,
-        left: 0,
-        padding: 0,
-        width: "100%",
-        zIndex: 1300
-    },
-    indicator: {
-        display: "none"
-    }
-})(Tabs);
-
-const AntTabs = withStyles({
-    root: {
-        color: "#cbd2f7",
-        fontSize: ".75rem",
-        margin: 0,
-
-        "&:hover": {
-            color: "#ffffffed",
-            opacity: 1
-        },
-        "&$selected": {
-            color: "#fff"
-        },
-        "&:focus": {
-            color: "#FFFFFF"
-        }
-    },
-    selected: {}
-})(Tab);
+import BookedTickets from '../components/movies/BookedTickets';
+import Dashboard from '../components/miniStocks/Dashboard';
+import DashboardPubG from '../components/pubGStats/Dashboard'
+import FooterTabs from './FooterTabs';
 
 let previousLocation;
 
 function MainSection({ history, location }) {
-    const [{ currentVideoSnippet, searchResult, ticketBooking }] = useContext(GlobalContext);
+    const [{ currentVideoSnippet, searchResult }] = useContext(GlobalContext);
     const [redirectState, setRedirectState] = useState(null);
-    const [tabValue, setTabValue] = useState(0);
-    const noOfMookedTickets = ticketBooking.length;
 
     const continueToHome = () => {
         localStorage.setItem('isThisNew', 'no');
         history.replace('/home');
-    }
-
-    const handleTabChange = (event, newValue) => {
-        setTabValue(newValue);
     }
 
     useEffect(() => {
@@ -190,26 +146,16 @@ function MainSection({ history, location }) {
                     <Route path="/ministocks" render={props => {
                         return <Dashboard {...props} />
                     }} />
+                    <Route path="/pubgstats" render={props => {
+                        return <DashboardPubG {...props} />
+                    }} />
+                    
                 </Switch>
                 <Route path="/" render={props => returnMainPlayer(props)} />
                 <div style={{ height: currentVideoSnippet.id ? "100px" : "0px" }} />
             </Container>
             <div className="stickyFooterLinks">
-                <Container style={{ position: 'relative' }}>
-                    <AntTab value={tabValue} onChange={handleTabChange} variant="fullWidth" indicatorColor="primary" textColor="primary">
-                        <AntTabs aria-label="Home" icon={<HomeIcon />} to="/home" label="Home" component={Link} />
-                        <AntTabs aria-label="Liked" icon={<QueueMusicIcon />} to="/relatedvideos" label="Related Videos" component={Link} />
-                        <AntTabs aria-label="Movies" icon={<GetAppIcon />} to="/movies" label="Movies" component={Link} />
-                        <AntTabs aria-label="Mini Stocks" icon={<HistoryIcon />} to="/ministocks" label="Mini Stocks" component={Link} />
-                    </AntTab>
-                    <div className="sticky">
-                        <Link to="/bookedtickets" style={{ color: '#efff00' }} alt="Booked Ticket" title="Booked Ticket">
-                            <Badge badgeContent={noOfMookedTickets} showZero color="primary">
-                                <MovieIcon />
-                            </Badge>
-                        </Link>
-                    </div>
-                </Container>
+                <FooterTabs />
             </div>
         </>
     )

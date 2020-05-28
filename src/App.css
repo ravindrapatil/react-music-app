@@ -275,3 +275,11 @@
 .highchart {
   background: url(https://www.highcharts.com/samples/graphics/sand.png);
 }
+
+.speedDialIcon  {
+  color: #ff0081
+}
+
+.speedDialBtn .MuiFab-primary {
+  background-color: #ff0081 !important
+}
