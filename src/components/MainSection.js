@@ -147,7 +147,7 @@ function MainSection({ history, location }) {
                         return <Dashboard {...props} />
                     }} />
                     <Route path="/pubgstats" render={props => {
-                        return <DashboardPubG {...props} />
+                        return <DashboardPubG />
                     }} />
                     
                 </Switch>
