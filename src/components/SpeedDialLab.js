@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { withRouter, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
     makeStyles
 } from '@material-ui/core/';
-import FileCopyIcon from '@material-ui/icons/FileCopyOutlined';
 import SaveIcon from '@material-ui/icons/Save';
 import PrintIcon from '@material-ui/icons/Print';
 import ShareIcon from '@material-ui/icons/Share';
@@ -11,6 +10,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 
 const useStyles = makeStyles(() => ({
     wrapper: {
@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const actions = [
-    { icon: <FileCopyIcon className="speedDialIcon" />, name: 'Copy', link: '/pubgstats' },
+    { icon: <SportsEsportsIcon className="speedDialIcon" />, name: 'PUBG Stats', link: '/pubgstats' },
     { icon: <SaveIcon className="speedDialIcon" />, name: 'Save', link: '/' },
     { icon: <PrintIcon className="speedDialIcon" />, name: 'Print', link: '/' },
     { icon: <ShareIcon className="speedDialIcon" />, name: 'Share', link: '/' },
