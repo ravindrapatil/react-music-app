@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
 
 const actions = [
     { icon: <SportsEsportsIcon className="speedDialIcon" />, name: 'PUBG Stats', link: '/pubgstats' },
-    { icon: <SaveIcon className="speedDialIcon" />, name: 'Save', link: '/' },
+    { icon: <SaveIcon className="speedDialIcon" />, name: 'Shopping Cart', link: '/shoppingCartCheckout' },
     { icon: <PrintIcon className="speedDialIcon" />, name: 'Print', link: '/' },
     { icon: <ShareIcon className="speedDialIcon" />, name: 'Share', link: '/' },
     { icon: <FavoriteIcon className="speedDialIcon" />, name: 'Like', link: '/' },

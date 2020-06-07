@@ -276,14 +276,44 @@
   background: url(https://www.highcharts.com/samples/graphics/sand.png);
 }
 
-.speedDialIcon  {
-  color: #ff0081
+.speedDialIcon {
+  color: #ff0081;
 }
 
 .speedDialBtn .MuiFab-primary {
-  background-color: #ff0081 !important
+  background-color: #ff0081 !important;
 }
 
 .pubgStats {
-  margin: 10px 0 !important
+  margin: 10px 0 !important;
+}
+
+.shippingBlock {
+  padding: 10px;
+}
+
+.shippingBlock .left {
+  display: inline-block;
+  width: 165px;
+  text-align: right;
+  padding-right: 25px;
+}
+
+.shippingBlock .right {
+  display: inline-block;
+}
+
+.infoIcon {
+  width: 0.8em !important;
+  height: 0.8em !important;
+  color: #989696;
+}
+
+.promoCodeInput input {
+  text-align: center;
+}
+
+.greenBtn {
+  background-color: #3bb33b !important;
+  box-shadow: none !important;
 }

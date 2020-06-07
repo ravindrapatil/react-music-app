@@ -20,6 +20,7 @@ import BookedTickets from '../components/movies/BookedTickets';
 import Dashboard from '../components/miniStocks/Dashboard';
 import DashboardPubG from '../components/pubGStats/Dashboard'
 import FooterTabs from './FooterTabs';
+import ShoppingCart from '../components/ShoppingCartCheckout/ShoppingCart';
 
 let previousLocation;
 
@@ -149,7 +150,10 @@ function MainSection({ history, location }) {
                     <Route path="/pubgstats" render={props => {
                         return <DashboardPubG />
                     }} />
-                    
+                    <Route path="/shoppingCartCheckout" render={props => {
+                        return <ShoppingCart />
+                    }} />
+
                 </Switch>
                 <Route path="/" render={props => returnMainPlayer(props)} />
                 <div style={{ height: currentVideoSnippet.id ? "100px" : "0px" }} />
