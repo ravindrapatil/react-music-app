@@ -6,6 +6,9 @@ import {
     makeStyles,
     Divider
 } from '@material-ui/core/';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import SubTotal from './SubTotal';
 import PickupSavings from './PickupSavings';
 import TaxesFees from './TaxesFees';
@@ -30,10 +33,11 @@ function ShoppingCart({ promoCode }) {
         pickupSaving: -3.75,
         taxes: 0,
         estimatedTotal: 0,
-        disabledBtn: false
+        disabledBtn: false,
+        successMsgLabel: false
     }
     const [state, setstate] = useState(initialState);
-    const { total, pickupSaving, taxes, estimatedTotal, disabledBtn } = state;
+    const { total, pickupSaving, taxes, estimatedTotal, disabledBtn, successMsgLabel } = state;
 
     useEffect(() => {
         setstate({
@@ -48,15 +52,18 @@ function ShoppingCart({ promoCode }) {
             setstate({
                 ...state,
                 estimatedTotal: estimatedTotal * 0.9,
-                disabledBtn: true
+                disabledBtn: true,
+                successMsgLabel: true
             })
+        } else {
+            toast("Wrong promo code !")
         }
     }
 
     return (
         <div>
             <Typography variant="h6" className={classes.title}>
-                Shopping Cart Checkout
+                Shopping Cart Checkout - Apply Promo code
             </Typography>
             <Card className={classes.root}>
                 <SubTotal total={total.toFixed(2)}></SubTotal>
@@ -66,8 +73,18 @@ function ShoppingCart({ promoCode }) {
                 <EstimatedTotal estimatedTotal={estimatedTotal.toFixed(2)} />
                 <ItemDetails estimatedTotal={estimatedTotal.toFixed(2)} />
                 <Divider light />
-                <PromoCode disabledBtn={disabledBtn} giveDiscount={giveDiscount} />
+                <PromoCode disabledBtn={disabledBtn} giveDiscount={giveDiscount} successMsgLabel={successMsgLabel} />
             </Card>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnVisibilityChange
+                draggable
+                pauseOnHover />
         </div>
     )
 }

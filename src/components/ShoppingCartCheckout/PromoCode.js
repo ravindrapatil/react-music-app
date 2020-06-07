@@ -10,7 +10,7 @@ import {
 import { connect } from 'react-redux';
 import { handleChange } from '../../appRedux';
 
-function PromoCode({ disabledBtn, giveDiscount, handlePromoCodeChange, promoCode }) {
+function PromoCode({ disabledBtn, giveDiscount, handlePromoCodeChange, promoCode, successMsgLabel }) {
     const [state, setstate] = useState({
         open: false,
         expanded: false
@@ -49,6 +49,7 @@ function PromoCode({ disabledBtn, giveDiscount, handlePromoCodeChange, promoCode
                                 onChange={handleCodeChange}
                             />
                         </div>
+                        <div style={{ fontSize: '11px', padding: '5px 0 0', color: '#949494' }}>(Try with: DISCOUNT)</div>
                         <div style={{ padding: '20px 0 0' }}>
                             <Button variant="contained"
                                 size="small"
@@ -59,6 +60,10 @@ function PromoCode({ disabledBtn, giveDiscount, handlePromoCodeChange, promoCode
                                 Apply
                             </Button>
                         </div>
+                        {
+                            successMsgLabel &&
+                            <div style={{ fontSize: '11px', padding: '5px 0 0', color: '#3bb33b' }}>Promo code successfully applied</div>
+                        }
                     </form>
                 </CardContent>
             </Collapse>
