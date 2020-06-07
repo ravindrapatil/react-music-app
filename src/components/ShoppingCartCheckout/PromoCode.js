@@ -62,7 +62,7 @@ function PromoCode({ disabledBtn, giveDiscount, handlePromoCodeChange, promoCode
                         </div>
                         {
                             successMsgLabel &&
-                            <div style={{ fontSize: '11px', padding: '5px 0 0', color: '#3bb33b' }}>Promo code successfully applied</div>
+                            <div style={{ fontSize: '11px', padding: '5px 0 0', color: '#3bb33b', fontWeight: 'bold' }}>Promo code successfully applied</div>
                         }
                     </form>
                 </CardContent>

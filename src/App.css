@@ -317,3 +317,7 @@
   background-color: #3bb33b !important;
   box-shadow: none !important;
 }
+
+.Toastify__toast-body {
+  color: red !important;
+}
