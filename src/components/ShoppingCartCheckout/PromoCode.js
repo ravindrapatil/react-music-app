@@ -29,6 +29,15 @@ function PromoCode({ disabledBtn, giveDiscount, handlePromoCodeChange, promoCode
         handlePromoCodeChange(e)
     }
 
+    const keyPress = (e) => {
+        if (e.keyCode === 13) {
+            if (e.target.value.length) {
+                giveDiscount();
+                e.preventDefault();
+            }
+        }
+    }
+
     return (
         <div className="shippingBlock" style={{ textAlign: 'center' }}>
             <CardActions style={{ justifyContent: 'center', padding: '10px 0 8px' }}>
@@ -47,6 +56,7 @@ function PromoCode({ disabledBtn, giveDiscount, handlePromoCodeChange, promoCode
                                 placeholder="Enter promo code"
                                 value={promoCode}
                                 onChange={handleCodeChange}
+                                onKeyDown={keyPress}
                             />
                         </div>
                         <div style={{ fontSize: '11px', padding: '5px 0 0', color: '#949494' }}>(Try with: DISCOUNT)</div>
