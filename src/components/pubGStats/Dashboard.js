@@ -8,10 +8,7 @@ import {
     IconButton,
     Grid,
     Typography,
-    Divider,
-    List,
-    ListItem,
-    ListItemText
+    Divider
 } from '@material-ui/core/';
 import SearchIcon from '@material-ui/icons/Search';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
@@ -39,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard() {
     const classes = useStyles();
-    const [playerStatistics, playerGameModeStatistics] = EmployeeService();
+    const { playerStatistics, playerGameModeStatistics } = EmployeeService();
 
     const [state, setstate] = useState({
         query: '',

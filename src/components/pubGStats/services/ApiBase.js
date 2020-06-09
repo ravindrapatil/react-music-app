@@ -6,7 +6,7 @@ import ToastUtil from '../../../utilities/ToastUtil';
 const KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjMDlkYzQxMC04MmUzLTAxMzgtMmYyMS00ZDk1MjEyYTg1YmEiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTkwNjUxMzM5LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6InJhdmluZHJhLXNwYXRpIn0.yCY2YJDLWLt4t2Cr3OOE3TuLdTR_LmDC1RV1oBaDZvc'
 
 function ApiBase() {
-    const [showLoader, done] = ToastUtil()
+    const { showLoader, done } = ToastUtil()
 
     const onProgress = () => {
         showLoader(<AppLoader />, {});
@@ -36,13 +36,32 @@ function ApiBase() {
         }).catch(handleHttpRequestError)
     }
 
+    const httpGetForFootball = (params) => {
+        const { httpMethod, url } = params;
+        const headers = {
+            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+            "x-rapidapi-key": "a3cIgOEFf9mshzRAkVlcEM6Jxd0lp1GaOIDjsnmWyrk9CDJ229"
+        };
+        onProgress();
+        return axios({
+            method: httpMethod,
+            url: url,
+            headers,
+            onDownloadProgress: progressEvent => {
+                setTimeout(() => {
+                    onCloseToast();
+                }, 400);
+            }
+        }).catch(handleHttpRequestError)
+    }
+
     const handleHttpRequestError = (error) => {
         console.log(error);
     }
 
-    return [
-        httpGet
-    ]
+    return {
+        httpGet, httpGetForFootball
+    }
 }
 
 export default ApiBase

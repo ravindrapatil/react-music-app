@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import {
     makeStyles
 } from '@material-ui/core/';
-import PrintIcon from '@material-ui/icons/Print';
 import ShareIcon from '@material-ui/icons/Share';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import SpeedDial from '@material-ui/lab/SpeedDial';
@@ -11,6 +10,7 @@ import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import GridOnIcon from '@material-ui/icons/GridOn';
 
 const useStyles = makeStyles(() => ({
     wrapper: {
@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
 const actions = [
     { icon: <SportsEsportsIcon className="speedDialIcon" />, name: 'PUBG Stats', link: '/pubgstats' },
     { icon: <ShoppingCartIcon className="speedDialIcon" />, name: 'Shopping Cart', link: '/shoppingCartCheckout' },
-    { icon: <PrintIcon className="speedDialIcon" />, name: 'Print', link: '/' },
+    { icon: <GridOnIcon className="speedDialIcon" />, name: 'Table/Grid', link: '/tableGrid' },
     { icon: <ShareIcon className="speedDialIcon" />, name: 'Share', link: '/' },
     { icon: <FavoriteIcon className="speedDialIcon" />, name: 'Like', link: '/' },
 ];

@@ -48,7 +48,6 @@ function ShoppingCart({ promoCode }) {
     }, [taxes]);
 
     const giveDiscount = () => {
-        debugger;
         if (promoCode === 'DISCOUNT') {
             setstate({
                 ...state,

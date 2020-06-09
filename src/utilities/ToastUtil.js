@@ -40,7 +40,7 @@ function ToastUtil() {
         toast.dismiss(idToDismiss)
     }
 
-    return [showLoader, done]
+    return { showLoader, done }
 }
 
 export default ToastUtil

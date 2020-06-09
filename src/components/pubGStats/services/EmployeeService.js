@@ -3,8 +3,8 @@ import API_END_POINTS from './ApiConstants';
 import ToastUtil from '../../../utilities/ToastUtil';
 
 function EmployeeService() {
-    const [httpGet] = ApiBase();
-    const [done] = ToastUtil();
+    const { httpGet } = ApiBase();
+    const { done } = ToastUtil();
 
     const playerStatistics = async ({ request, callBackOptions = {} }) => {
         const { onStart, onComplete, onError } = callBackOptions;
@@ -64,7 +64,7 @@ function EmployeeService() {
         console.log(error);
     }
 
-    return [playerStatistics, playerGameModeStatistics]
+    return { playerStatistics, playerGameModeStatistics }
 }
 
 export default EmployeeService

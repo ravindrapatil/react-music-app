@@ -21,6 +21,7 @@ import Dashboard from '../components/miniStocks/Dashboard';
 import DashboardPubG from '../components/pubGStats/Dashboard'
 import FooterTabs from './FooterTabs';
 import ShoppingCart from '../components/ShoppingCartCheckout/ShoppingCart';
+import TableGrid from '../components/tableGrid/TableGrid';
 
 let previousLocation;
 
@@ -152,6 +153,9 @@ function MainSection({ history, location }) {
                     }} />
                     <Route path="/shoppingCartCheckout" render={props => {
                         return <ShoppingCart />
+                    }} />
+                    <Route path="/tableGrid" render={props => {
+                        return <TableGrid />
                     }} />
 
                 </Switch>
