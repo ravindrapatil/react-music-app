@@ -3,7 +3,7 @@ import React from 'react'
 import { forwardRef } from 'react';
 import {
     AddBox, ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, DeleteOutline,
-    Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt, Search, ViewColumn
+    Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt, Search, ViewColumn, Favorite
 } from "@material-ui/icons";
 
 const tableIcons = {
@@ -23,7 +23,8 @@ const tableIcons = {
     Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
     SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
     ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+    Favorite: forwardRef((props, ref) => <Favorite {...props} ref={ref} />)
 }
 
 function useMaterialTableIcon() {
