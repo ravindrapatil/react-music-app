@@ -22,6 +22,8 @@ import DashboardPubG from '../components/pubGStats/Dashboard'
 import FooterTabs from './FooterTabs';
 import ShoppingCart from '../components/ShoppingCartCheckout/ShoppingCart';
 import TableGrid from '../components/tableGrid/TableGrid';
+import RegularTable from '../components/tableGrid/RegularTable';
+import MaterialTableCurd from '../components/tableGrid/MaterialTableCurd'
 
 let previousLocation;
 
@@ -157,6 +159,13 @@ function MainSection({ history, location }) {
                     <Route path="/tableGrid" render={props => {
                         return <TableGrid />
                     }} />
+                    <Route path="/regularTable" render={props => {
+                        return <RegularTable />
+                    }} />
+                    <Route path="/materialTableCurd" render={props => {
+                        return <MaterialTableCurd />
+                    }} />
+
 
                 </Switch>
                 <Route path="/" render={props => returnMainPlayer(props)} />
