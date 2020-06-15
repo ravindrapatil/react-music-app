@@ -7,6 +7,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
+import FaceIcon from '@material-ui/icons/Face';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
@@ -39,7 +40,7 @@ const actions = [
     { icon: <SportsEsportsIcon className="speedDialIcon" />, name: 'PUBG Stats', link: '/pubgstats' },
     { icon: <ShoppingCartIcon className="speedDialIcon" />, name: 'Shopping Cart', link: '/shoppingCartCheckout' },
     { icon: <GridOnIcon className="speedDialIcon" />, name: 'Table/Grid', link: '/tableGrid' },
-    { icon: <ShareIcon className="speedDialIcon" />, name: 'Facial Recognition', link: '/facialDashboard' },
+    { icon: <FaceIcon className="speedDialIcon" />, name: 'Facial Recognition', link: '/facialDashboard' },
     { icon: <FavoriteIcon className="speedDialIcon" />, name: 'Like', link: '/' },
 ];
 
