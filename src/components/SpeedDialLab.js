@@ -39,7 +39,7 @@ const actions = [
     { icon: <SportsEsportsIcon className="speedDialIcon" />, name: 'PUBG Stats', link: '/pubgstats' },
     { icon: <ShoppingCartIcon className="speedDialIcon" />, name: 'Shopping Cart', link: '/shoppingCartCheckout' },
     { icon: <GridOnIcon className="speedDialIcon" />, name: 'Table/Grid', link: '/tableGrid' },
-    { icon: <ShareIcon className="speedDialIcon" />, name: 'Share', link: '/' },
+    { icon: <ShareIcon className="speedDialIcon" />, name: 'Facial Recognition', link: '/facialDashboard' },
     { icon: <FavoriteIcon className="speedDialIcon" />, name: 'Like', link: '/' },
 ];
 

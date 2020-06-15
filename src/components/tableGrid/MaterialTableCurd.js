@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import services from './hooks/services';
 import MaterialTable from "material-table";
 import useTableGrid from './hooks/useMaterialTableIcon';
+import defaultImg from '../../images/default-movie.jpg';
 
 function MaterialTableCurd() {
     const history = useHistory();
@@ -77,10 +78,20 @@ function MaterialTableCurd() {
                                             <div style={{
                                                 fontSize: 30,
                                                 textAlign: 'center',
-                                                color: 'white',
+                                                color: '#e60909',
                                                 padding: '20px 0',
-                                                backgroundColor: '#43A047'
+                                                backgroundColor: '#bddce8'
                                             }}>
+                                                <div><img
+                                                    style={{
+                                                        width: '100px',
+                                                        borderRadius: '80px',
+                                                        borderColor: '#92277a',
+                                                        border: '4px solid #3f51b5'
+                                                    }}
+                                                    src={`${rowData._links.avatar.href}` ? `${rowData._links.avatar.href}` : { defaultImg }}
+                                                    alt={rowData.first_name} />
+                                                </div>
                                                 {rowData.first_name} {rowData.last_name}
                                             </div>
                                         )

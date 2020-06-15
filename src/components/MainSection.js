@@ -23,7 +23,8 @@ import FooterTabs from './FooterTabs';
 import ShoppingCart from '../components/ShoppingCartCheckout/ShoppingCart';
 import TableGrid from '../components/tableGrid/TableGrid';
 import RegularTable from '../components/tableGrid/RegularTable';
-import MaterialTableCurd from '../components/tableGrid/MaterialTableCurd'
+import MaterialTableCurd from '../components/tableGrid/MaterialTableCurd';
+import FacialDashboard from '../components/FacialRecognition/FacialDashboard';
 
 let previousLocation;
 
@@ -165,8 +166,9 @@ function MainSection({ history, location }) {
                     <Route path="/materialTableCurd" render={props => {
                         return <MaterialTableCurd />
                     }} />
-
-
+                    <Route path="/facialDashboard" render={props => {
+                        return <FacialDashboard />
+                    }} />
                 </Switch>
                 <Route path="/" render={props => returnMainPlayer(props)} />
                 <div style={{ height: currentVideoSnippet.id ? "100px" : "0px" }} />
